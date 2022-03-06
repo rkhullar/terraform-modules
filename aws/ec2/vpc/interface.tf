@@ -39,6 +39,6 @@ variable "flags" {
   default = {}
 }
 
-output "debug" {
-  value = var.cidr
+output "id" {
+  value = aws_vpc.default.id
 }
