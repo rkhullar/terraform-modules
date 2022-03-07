@@ -34,6 +34,11 @@ variable "flags" {
   default = {}
 }
 
+variable "subnet_prefix" {
+  type    = map(string)
+  default = {}
+}
+
 output "id" {
   value = module.default.id
 }
