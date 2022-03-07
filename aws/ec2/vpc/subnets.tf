@@ -14,3 +14,21 @@ resource "aws_subnet" "public" {
   map_public_ip_on_launch = local.flags["map_public_ip_on_launch"]
   tags                    = merge(var.tags, { Name = "${local.subnet_prefix["public"]}${local.number_to_letter[count.index]}" })
 }
+
+resource "aws_subnet" "private" {
+  count                   = var.zone_count
+  vpc_id                  = aws_vpc.default.id
+  cidr_block              = local.group_zone_to_cidr["private"][count.index]
+  availability_zone       = "${local.region}${local.number_to_letter[count.index]}"
+  map_public_ip_on_launch = false
+  tags                    = merge(var.tags, { Name = "${local.subnet_prefix["private"]}${local.number_to_letter[count.index]}" })
+}
+
+resource "aws_subnet" "data" {
+  count                   = var.zone_count
+  vpc_id                  = aws_vpc.default.id
+  cidr_block              = local.group_zone_to_cidr["data"][count.index]
+  availability_zone       = "${local.region}${local.number_to_letter[count.index]}"
+  map_public_ip_on_launch = false
+  tags                    = merge(var.tags, { Name = "${local.subnet_prefix["data"]}${local.number_to_letter[count.index]}" })
+}
