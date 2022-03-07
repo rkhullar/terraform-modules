@@ -1,34 +1,32 @@
 locals {
   groups        = ["public", "private", "data"]
   group_to_cidr = { for idx, group in local.groups : group => cidrsubnet(var.cidr, 2, idx) }
+  subnet_bits   = max(2, ceil(log(var.zone_count, 2)))
   group_zone_to_cidr = { for group, group_cidr in local.group_to_cidr : group => [
-    for idx in range(var.zone_count) : cidrsubnet(group_cidr, 2, idx)
+    for idx in range(var.zone_count) : cidrsubnet(group_cidr, local.subnet_bits, idx)
   ] }
 }
 
-resource "aws_subnet" "public" {
-  count                   = var.zone_count
-  vpc_id                  = aws_vpc.default.id
-  cidr_block              = local.group_zone_to_cidr["public"][count.index]
-  availability_zone       = "${local.region}${local.number_to_letter[count.index]}"
-  map_public_ip_on_launch = local.flags["map_public_ip_on_launch"]
-  tags                    = merge(var.tags, { Name = "${local.subnet_prefix["public"]}${local.number_to_letter[count.index]}" })
+locals {
+  subnet_detail_list = flatten([
+    for group in local.groups : [
+      for zone_idx in range(var.zone_count) : {
+        group       = group
+        zone_idx    = zone_idx
+        zone_letter = local.number_to_letter[zone_idx]
+        cidr_block  = local.group_zone_to_cidr[group][zone_idx]
+  }]])
 }
 
-resource "aws_subnet" "private" {
-  count                   = var.zone_count
-  vpc_id                  = aws_vpc.default.id
-  cidr_block              = local.group_zone_to_cidr["private"][count.index]
-  availability_zone       = "${local.region}${local.number_to_letter[count.index]}"
-  map_public_ip_on_launch = false
-  tags                    = merge(var.tags, { Name = "${local.subnet_prefix["private"]}${local.number_to_letter[count.index]}" })
+locals {
+  subnet_detail_map = { for item in local.subnet_detail_list : join("/", [item.group, item.zone_idx]) => item }
 }
 
-resource "aws_subnet" "data" {
-  count                   = var.zone_count
+resource "aws_subnet" "default" {
+  for_each                = local.subnet_detail_map
   vpc_id                  = aws_vpc.default.id
-  cidr_block              = local.group_zone_to_cidr["data"][count.index]
-  availability_zone       = "${local.region}${local.number_to_letter[count.index]}"
-  map_public_ip_on_launch = false
-  tags                    = merge(var.tags, { Name = "${local.subnet_prefix["data"]}${local.number_to_letter[count.index]}" })
+  cidr_block              = each.value.cidr_block
+  availability_zone       = "${local.region}${each.value.zone_letter}"
+  map_public_ip_on_launch = each.value.group == "public" ? local.flags["map_public_ip_on_launch"] : false
+  tags                    = merge(var.tags, { Name = "${local.subnet_prefix[each.value.group]}${each.value.zone_letter}" })
 }
