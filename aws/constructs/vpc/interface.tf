@@ -37,3 +37,7 @@ variable "flags" {
 output "id" {
   value = module.default.id
 }
+
+output "debug" {
+  value = module.default.debug
+}

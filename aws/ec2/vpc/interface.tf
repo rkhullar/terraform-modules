@@ -39,6 +39,30 @@ variable "flags" {
   default = {}
 }
 
+# random
+variable "subnet_prefix_defaults" {
+  type = object({
+    public  = string
+    private = string
+    data    = string
+  })
+  default = {
+    public  = "public-subnet-1"
+    private = "private-subnet-1"
+    data    = "private-subnet-2"
+  }
+}
+
+variable "subnet_prefix" {
+  type    = map(string)
+  default = {}
+}
+
 output "id" {
   value = aws_vpc.default.id
+}
+
+output "debug" {
+  value = {
+  }
 }
