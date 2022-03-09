@@ -7,6 +7,8 @@ locals {
   region            = data.aws_region.default.name
 }
 
+data "aws_region" "default" {}
+
 resource "aws_vpc" "default" {
   cidr_block           = var.cidr
   tags                 = merge(var.tags, { Name = var.name })
@@ -14,4 +16,12 @@ resource "aws_vpc" "default" {
   enable_dns_hostnames = local.flags["enable_dns_hostnames"]
 }
 
-data "aws_region" "default" {}
+resource "aws_internet_gateway" "default" {
+  vpc_id = aws_vpc.default.id
+  tags   = merge(var.tags, { Name = var.name })
+}
+
+resource "aws_default_security_group" "default" {
+  vpc_id = aws_vpc.default.id
+  tags   = merge(var.tags, { Name = var.name })
+}
