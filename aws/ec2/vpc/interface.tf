@@ -39,6 +39,11 @@ variable "flags" {
   default = {}
 }
 
+variable "nat_zone" {
+  type    = number
+  default = null
+}
+
 # random
 variable "subnet_prefix_defaults" {
   type = object({
