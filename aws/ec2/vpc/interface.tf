@@ -62,6 +62,14 @@ output "id" {
   value = aws_vpc.default.id
 }
 
+output "cidr" {
+  value = aws_vpc.default.cidr_block
+}
+
+output "subnets" {
+  value = local.subnet_ids
+}
+
 output "debug" {
   value = {
   }

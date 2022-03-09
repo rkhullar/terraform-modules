@@ -43,6 +43,14 @@ output "id" {
   value = module.default.id
 }
 
+output "cidr" {
+  value = module.default.cidr
+}
+
+output "subnets" {
+  value = module.default.subnets
+}
+
 output "debug" {
   value = module.default.debug
 }

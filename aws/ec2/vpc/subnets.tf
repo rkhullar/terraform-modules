@@ -20,6 +20,7 @@ locals {
 
 locals {
   subnet_detail_map = { for item in local.subnet_detail_list : join("/", [item.group, item.zone_idx]) => item }
+  subnet_ids        = { for group in local.groups : group => [for zone_idx in range(var.zone_count) : aws_subnet.default["${group}/${zone_idx}"].id] }
 }
 
 resource "aws_subnet" "default" {
