@@ -34,6 +34,11 @@ variable "flags" {
   default = {}
 }
 
+variable "nat_zone" {
+  type    = number
+  default = null
+}
+
 variable "subnet_prefix" {
   type    = map(string)
   default = {}

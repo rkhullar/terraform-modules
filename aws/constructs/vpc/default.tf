@@ -5,5 +5,6 @@ module "default" {
   cidr          = var.cidr
   zone_count    = var.zone_count
   flags         = var.flags
+  nat_zone      = var.nat_zone
   subnet_prefix = var.subnet_prefix
 }
