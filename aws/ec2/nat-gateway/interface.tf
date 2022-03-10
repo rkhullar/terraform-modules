@@ -7,9 +7,10 @@ variable "subnet" {
   type = string
 }
 
-output "debug" {
-  value = {
-    eip = aws_eip.default
-    ngw = aws_nat_gateway.default
-  }
+output "id" {
+  value = aws_nat_gateway.default.id
+}
+
+output "ip" {
+  value = aws_eip.default.public_ip
 }
