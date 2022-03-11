@@ -44,6 +44,7 @@ variable "subnet_prefix" {
   default = {}
 }
 
+# outputs
 output "id" {
   value = module.default.id
 }
@@ -54,8 +55,4 @@ output "cidr" {
 
 output "subnets" {
   value = module.default.subnets
-}
-
-output "debug" {
-  value = module.default.debug
 }

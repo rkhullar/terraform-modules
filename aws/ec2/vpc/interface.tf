@@ -63,6 +63,7 @@ variable "subnet_prefix" {
   default = {}
 }
 
+# outputs
 output "id" {
   value = aws_vpc.default.id
 }
@@ -73,9 +74,4 @@ output "cidr" {
 
 output "subnets" {
   value = local.subnet_ids
-}
-
-output "debug" {
-  value = {
-  }
 }
