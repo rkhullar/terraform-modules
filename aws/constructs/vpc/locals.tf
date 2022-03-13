@@ -34,8 +34,8 @@ locals {
 locals {
   # routing
   routing        = merge(var.routing_defaults, var.routing)
-  common_routes  = local.routing["routes"]
-  public_routes  = local.routing["public_routes"]
-  private_routes = local.routing["private_routes"]
-  data_routes    = local.routing["data_routes"]
+  common_routes  = local.routing["common"]
+  public_routes  = local.routing["public"]
+  private_routes = local.routing["private"]
+  data_routes    = local.routing["data"]
 }
