@@ -43,5 +43,6 @@ locals {
     target      = item[1]["target"]
     type        = split("-", item[1]["target"])[0]
   }]
+  # TODO: try add route table alias for context to improve state key; for example 'private/0_10.1.0.0/16'
   custom_route_detail_map = { for item in local.custom_route_detail_list : "${item.table_id}_${item.destination}" => item }
 }
