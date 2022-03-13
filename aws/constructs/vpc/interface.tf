@@ -1,5 +1,7 @@
 # general
-variable "account" { type = string }
+variable "account" {
+  type = string
+}
 variable "project" { type = string }
 variable "owner" { type = string }
 variable "namespace" { type = string }
@@ -43,6 +45,24 @@ variable "subnet_prefix" {
   type    = map(string)
   default = {}
 }
+
+# peering
+variable "peering_defaults" {
+  type = object({
+    requests = list(map(string))
+    accepts  = list(map(string))
+  })
+  default = {
+    requests = []
+    accepts  = []
+  }
+}
+variable "peering" {
+  type    = any
+  default = {}
+}
+
+# routes
 
 # outputs
 output "id" {

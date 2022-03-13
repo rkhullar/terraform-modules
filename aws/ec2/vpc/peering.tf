@@ -1,13 +1,3 @@
-variable "peering_requests" {
-  # TODO: try to make owner and region optional
-  type    = list(object({ id = string, name = string, owner = string, region = string }))
-  default = []
-}
-variable "peering_accepts" {
-  type    = list(object({ id = string, name = string }))
-  default = []
-}
-
 resource "aws_vpc_peering_connection" "default" {
   for_each      = { for item in var.peering_requests : item["id"] => item }
   vpc_id        = aws_vpc.default.id
@@ -24,3 +14,6 @@ resource "aws_vpc_peering_connection_accepter" "default" {
   auto_accept               = true
   tags                      = merge(var.tags, { Name = each.value["name"], side = "accepter" })
 }
+
+# TODO: handle peering dns options?
+# TODO: move variable logic from construct to module?; would remove explicit object definition
