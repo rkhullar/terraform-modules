@@ -58,11 +58,30 @@ variable "peering_defaults" {
   }
 }
 variable "peering" {
-  type    = any
+  type    = map(map(string))
   default = {}
 }
 
-# routes
+# routing
+variable "routing_defaults" {
+  type = object({
+    common  = list(map(string))
+    public  = list(map(string))
+    private = list(map(string))
+    data    = list(map(string))
+  })
+  default = {
+    common  = []
+    public  = []
+    private = []
+    data    = []
+  }
+}
+variable "routing" {
+  type    = map(map(string))
+  default = {}
+}
+
 
 # outputs
 output "id" {

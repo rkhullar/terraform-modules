@@ -9,4 +9,8 @@ module "default" {
   subnet_prefix    = var.subnet_prefix
   peering_requests = local.peering_requests
   peering_accepts  = local.peering_accepts
+  routes           = local.common_routes
+  public_routes    = local.public_routes
+  private_routes   = local.private_routes
+  data_routes      = local.data_routes
 }
