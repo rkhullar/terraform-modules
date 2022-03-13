@@ -75,7 +75,26 @@ variable "peering_accepts" {
   default = []
 }
 
-# routes
+# routing
+variable "routes" {
+  type    = list(object({ destination = string, target = string }))
+  default = []
+}
+
+variable "public_routes" {
+  type    = list(object({ destination = string, target = string }))
+  default = []
+}
+
+variable "private_routes" {
+  type    = list(object({ destination = string, target = string }))
+  default = []
+}
+
+variable "data_routes" {
+  type    = list(object({ destination = string, target = string }))
+  default = []
+}
 
 # outputs
 output "id" {
