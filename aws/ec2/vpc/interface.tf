@@ -63,6 +63,39 @@ variable "subnet_prefix" {
   default = {}
 }
 
+# peering
+variable "peering_requests" {
+  # NOTE: owner and region are nullable here; optional in construct
+  type    = list(object({ id = string, name = string, owner = string, region = string }))
+  default = []
+}
+
+variable "peering_accepts" {
+  type    = list(object({ id = string, name = string }))
+  default = []
+}
+
+# routing
+variable "routes" {
+  type    = list(object({ destination = string, target = string }))
+  default = []
+}
+
+variable "public_routes" {
+  type    = list(object({ destination = string, target = string }))
+  default = []
+}
+
+variable "private_routes" {
+  type    = list(object({ destination = string, target = string }))
+  default = []
+}
+
+variable "data_routes" {
+  type    = list(object({ destination = string, target = string }))
+  default = []
+}
+
 # outputs
 output "id" {
   value = aws_vpc.default.id

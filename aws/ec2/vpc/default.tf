@@ -6,9 +6,11 @@ locals {
   number_to_letter  = split("", "abcdefg")
   region            = data.aws_region.default.name
   nat_zone          = coalesce(var.nat_zone, 0)
+  account_id        = data.aws_caller_identity.default.account_id
 }
 
 data "aws_region" "default" {}
+data "aws_caller_identity" "default" {}
 
 resource "aws_vpc" "default" {
   cidr_block           = var.cidr
@@ -18,11 +20,6 @@ resource "aws_vpc" "default" {
 }
 
 resource "aws_internet_gateway" "default" {
-  vpc_id = aws_vpc.default.id
-  tags   = merge(var.tags, { Name = var.name })
-}
-
-resource "aws_default_security_group" "default" {
   vpc_id = aws_vpc.default.id
   tags   = merge(var.tags, { Name = var.name })
 }
@@ -39,4 +36,9 @@ module "single-nat-gateway" {
   source = "../nat-gateway"
   tags   = merge(var.tags, { Name = var.name })
   subnet = local.subnet_ids["public"][local.nat_zone]
+}
+
+resource "aws_default_security_group" "default" {
+  vpc_id = aws_vpc.default.id
+  tags   = merge(var.tags, { Name = var.name })
 }
