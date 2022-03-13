@@ -58,7 +58,7 @@ variable "peering_defaults" {
   }
 }
 variable "peering" {
-  type    = map(map(string))
+  type    = any
   default = {}
 }
 
@@ -78,7 +78,7 @@ variable "routing_defaults" {
   }
 }
 variable "routing" {
-  type    = map(map(string))
+  type    = any
   default = {}
 }
 
