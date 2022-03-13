@@ -38,10 +38,10 @@ locals {
   # generate resource details
   custom_routes = concat(local.public_table_routes, local.private_table_routes, local.data_table_routes)
   custom_route_detail_list = [for item in local.custom_routes : {
-    table_id    = pair[0]
-    destination = pair[1]["destination"]
-    target      = pair[1]["target"]
-    type        = split("-", pair[1]["target"])[0]
+    table_id    = item[0]
+    destination = item[1]["destination"]
+    target      = item[1]["target"]
+    type        = split("-", item[1]["target"])[0]
   }]
   custom_route_detail_map = { for item in local.custom_route_detail_list : "${item.table_id}_${item.destination}" => item }
 }
