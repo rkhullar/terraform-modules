@@ -1,7 +1,5 @@
 # general
-variable "account" {
-  type = string
-}
+variable "account" { type = string }
 variable "project" { type = string }
 variable "owner" { type = string }
 variable "namespace" { type = string }
