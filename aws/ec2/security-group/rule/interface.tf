@@ -7,7 +7,7 @@ variable "type" {
   type = string
   validation {
     condition     = contains(["ingress", "egress"], var.type)
-    error_message = "ingress | egress"
+    error_message = "Allowed Values: {ingress | egress}."
   }
 }
 
@@ -16,7 +16,7 @@ variable "protocol" {
   default = "tcp"
   validation {
     condition     = contains(["tcp", "udp", "all"], var.protocol)
-    error_message = "tcp | udp | all"
+    error_message = "Allowed Values: {tcp | udp | all}."
   }
 }
 
