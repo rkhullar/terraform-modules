@@ -7,7 +7,7 @@ resource "aws_ssm_parameter" "managed" {
 }
 
 resource "aws_ssm_parameter" "secret" {
-  for_each = toset(var.secrets)
+  for_each = var.secrets
   name     = "${var.prefix}${each.key}"
   type     = "SecureString"
   value    = "default"

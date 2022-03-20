@@ -5,12 +5,12 @@ variable "managed" {
 }
 
 variable "secrets" {
-  type    = list(string)
+  type    = set(string)
   default = []
 }
 
 variable "custom" {
-  type    = list(object({ name = string, type = string, value = string }))
+  type    = set(object({ name = string, type = string, value = string }))
   default = []
 }
 
