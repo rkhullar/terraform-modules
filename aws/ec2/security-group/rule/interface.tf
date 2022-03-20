@@ -42,13 +42,13 @@ variable "aliases" {
 }
 
 locals {
-  allowed_x = ["a", "b"]
+  error_x = "Allowed Values: {}."
 }
 
 variable "x" {
   type = string
   validation {
-    condition = contains(local.allowed_x, var.x)
-    error_message = "Allowed Values: {}."
+    condition = contains(["a", "b"], var.x)
+    error_message = local.error_x
   }
 }
