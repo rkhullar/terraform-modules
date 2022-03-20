@@ -4,19 +4,19 @@ variable "id" {
 }
 
 variable "type" {
-  type        = string
-  description = "ingress | egress"
+  type = string
   validation {
-    condition = contains(["ingress", "egress"], var.type)
+    condition     = contains(["ingress", "egress"], var.type)
+    error_message = "ingress | egress"
   }
 }
 
 variable "protocol" {
-  type        = string
-  description = "tcp | udp | all"
-  default     = "tcp"
+  type    = string
+  default = "tcp"
   validation {
-    condition = contains(["tcp", "udp", "all"], var.protocol)
+    condition     = contains(["tcp", "udp", "all"], var.protocol)
+    error_message = "tcp | udp | all"
   }
 }
 
