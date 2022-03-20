@@ -40,15 +40,3 @@ variable "aliases" {
   description = "name -> security_group_id"
   default     = {}
 }
-
-locals {
-  error_x = "Allowed Values: {}."
-}
-
-variable "x" {
-  type = string
-  validation {
-    condition = contains(["a", "b"], var.x)
-    error_message = local.error_x
-  }
-}
