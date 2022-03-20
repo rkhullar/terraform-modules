@@ -40,3 +40,9 @@ variable "aliases" {
   description = "name -> security_group_id"
   default     = {}
 }
+
+output "debug" {
+  value = {
+    regex_map = local.regex_map
+  }
+}
