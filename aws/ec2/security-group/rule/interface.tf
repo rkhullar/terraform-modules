@@ -45,6 +45,6 @@ output "debug" {
   value = {
     #    regex_map = local.regex_map
     #    sources   = local.sources
-    source_regex_list = local.source_regex_list
+    source_type_list = local.source_type_list
   }
 }

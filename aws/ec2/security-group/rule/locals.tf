@@ -8,6 +8,10 @@ locals {
     { for item in local.default_sources : item => item },
     { for item in local.alias_sources : item => var.aliases[item] }
   )
+}
+
+locals {
+  # enumerate over sources and regexes
   source_regex = setproduct(keys(local.sources), keys(local.regex_map))
   source_regex_list = [for item in local.source_regex : {
     source_key = item[0]
@@ -15,4 +19,6 @@ locals {
     regex_key  = item[1]
     regex_val  = local.regex_map[item[1]]
   }]
+  # filter to determine source types
+  source_type_list = [for item in local.source_regex_list : item if can(regex("^${item.regex}$", item.source))]
 }
