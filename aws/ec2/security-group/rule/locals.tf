@@ -8,4 +8,11 @@ locals {
     { for item in local.default_sources : item => item },
     { for item in local.alias_sources : item => var.aliases[item] }
   )
+  source_regex = setproduct(keys(local.sources), keys(local.regex_map))
+  source_regex_list = [for item in local.source_regex : {
+    source_key = item[0]
+    source_val = local.sources[item[0]]
+    regex_key  = item[1]
+    regex_val  = local.regex_map[item[1]]
+  }]
 }

@@ -43,7 +43,8 @@ variable "aliases" {
 
 output "debug" {
   value = {
-    regex_map = local.regex_map
-    sources   = local.sources
+    #    regex_map = local.regex_map
+    #    sources   = local.sources
+    source_regex_list = local.source_regex_list
   }
 }
