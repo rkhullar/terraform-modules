@@ -43,7 +43,8 @@ variable "aliases" {
 
 output "debug" {
   value = {
-    source_type_map = local.source_type_map
-    port_ranges     = local.port_ranges
+    #    source_type_map = local.source_type_map
+    #    port_ranges     = local.port_ranges
+    detail_map = local.detail_map
   }
 }
