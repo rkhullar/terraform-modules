@@ -34,6 +34,7 @@ locals {
 }
 
 locals {
+  # generate resource details
   source_port_ranges      = setproduct(keys(local.source_type_map), local.port_ranges)
   source_port_ranges_list = [for pair in local.source_port_ranges : zipmap(["source_key", "port_range"], pair)]
   detail_list = [for item in local.source_port_ranges_list : {
