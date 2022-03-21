@@ -32,3 +32,15 @@ locals {
   enable_all_traffic       = contains(["all", "-1"], var.protocol)
   port_ranges              = local.enable_all_traffic ? [[0, 0]] : local._port_ranges
 }
+
+locals {
+  source_port_ranges      = setproduct(keys(local.source_type_map), local.port_ranges)
+  source_port_ranges_list = [for pair in local.source_port_ranges : zipmap(["source_key", "port_range"], pair)]
+  detail_list = [for item in local.source_port_ranges_list : {
+    source_key = item.source_key
+    source_val = local.source_type_map[item.source_key].source_val
+    regex_key  = local.source_type_map[item.source_key].regex_key
+    port_range = item.port_range
+  }]
+  detail_map = { for item in local.detail_list : "${item.source_key}.${join("-", distinct(item.port_range))}" => item }
+}
