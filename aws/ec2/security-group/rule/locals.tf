@@ -20,6 +20,6 @@ locals {
     regex_val  = local.regex_map[item[1]]
   }]
   # filter to determine source types
-  #source_type_list = [for item in local.source_regex_list : item if can(regex("^${item.regex}$", item.source))]
-  source_type_list = [for item in local.source_regex_list : item if length(regexall("^${item.regex}$", item.source)) > 0]
+  source_type_list = [for item in local.source_regex_list : item if can(regex("^${item.regex_val}$", item.source_val))]
+  # source_type_list = [for item in local.source_regex_list : item if length(regexall("^${item.regex_val}$", item.source_val)) > 0]
 }
