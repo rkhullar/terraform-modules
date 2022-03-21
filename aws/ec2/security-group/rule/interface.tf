@@ -15,7 +15,7 @@ variable "protocol" {
   type    = string
   default = "tcp"
   validation {
-    condition     = contains(["tcp", "udp", "all"], var.protocol)
+    condition     = contains(["tcp", "udp", "all", "-1"], var.protocol)
     error_message = "Allowed Values: {tcp | udp | all}."
   }
 }
@@ -44,5 +44,6 @@ variable "aliases" {
 output "debug" {
   value = {
     source_type_map = local.source_type_map
+    port_ranges     = local.port_ranges
   }
 }

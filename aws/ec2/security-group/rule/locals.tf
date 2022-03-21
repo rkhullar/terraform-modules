@@ -23,3 +23,12 @@ locals {
   source_type_list = [for item in local.source_regex_list : item if can(regex("^${item.regex_val}$", item.source_val))]
   source_type_map  = { for item in local.source_type_list : item.source_key => item }
 }
+
+locals {
+  # process port ranges
+  _port_ranges_from_number = [for port in var.ports : [port, port]]
+  _port_ranges_from_string = [for text in var.port_ranges : [for val in split("-", text) : tonumber(val)]]
+  _port_ranges             = concat(local._port_ranges_from_number, local._port_ranges_from_string)
+  enable_all_traffic       = contains(["all", "-1"], var.protocol)
+  port_ranges              = local.enable_all_traffic ? [[0, 0]] : local._port_ranges
+}
