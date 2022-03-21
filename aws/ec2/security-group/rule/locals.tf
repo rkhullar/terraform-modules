@@ -21,5 +21,5 @@ locals {
   }]
   # filter to determine source types
   source_type_list = [for item in local.source_regex_list : item if can(regex("^${item.regex_val}$", item.source_val))]
-  # source_type_list = [for item in local.source_regex_list : item if length(regexall("^${item.regex_val}$", item.source_val)) > 0]
+  source_type_map  = { for item in local.source_type_list : item.source_key => item }
 }
