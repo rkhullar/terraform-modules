@@ -48,7 +48,6 @@ variable "aliases" {
 
 output "debug" {
   value = {
-    # input = local.detail_map
-    input = local.mock
+    input = local.detail_map
   }
 }
