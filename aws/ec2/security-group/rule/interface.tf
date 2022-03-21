@@ -44,7 +44,6 @@ variable "aliases" {
 output "debug" {
   value = {
     regex_map = local.regex_map
-    normal_sources = local.normal_sources
-    alias_sources = local.alias_sources
+    sources   = local.sources
   }
 }
