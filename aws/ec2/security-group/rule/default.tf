@@ -1,6 +1,5 @@
 resource "aws_security_group" "default" {
-  # TODO: add enable flag?
-  for_each                 = local.detail_map
+  for_each                 = var.enable ? local.detail_map : {}
   security_group_id        = var.id
   type                     = var.type
   protocol                 = var.protocol

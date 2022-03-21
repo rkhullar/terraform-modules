@@ -1,3 +1,8 @@
+variable "enable" {
+  type    = bool
+  default = true
+}
+
 variable "id" {
   type        = string
   description = "security_group_id"
@@ -43,8 +48,6 @@ variable "aliases" {
 
 output "debug" {
   value = {
-    #    source_type_map = local.source_type_map
-    #    port_ranges     = local.port_ranges
-    detail_map = local.detail_map
+    input = local.detail_map
   }
 }
