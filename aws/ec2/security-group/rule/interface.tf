@@ -46,8 +46,6 @@ variable "aliases" {
   default     = {}
 }
 
-output "debug" {
-  value = {
-    input = local.detail_map
-  }
+output "detail" {
+  value = local.detail_map
 }
