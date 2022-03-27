@@ -34,8 +34,8 @@ locals {
   location_verified_rules = [for rule in var.rules : rule if contains(local.matched_locations, rule.source) && contains(local.matched_locations, rule.target)]
   # add context for source and target types
   rules_with_type = [for rule in local.location_verified_rules : merge(rule, {
-    source_type = local.location_type_map[rule.source]
-    target_type = local.location_type_map[rule.target]
+    source_type = local.location_type_map[rule.source].regex_key
+    target_type = local.location_type_map[rule.target].regex_key
   })]
 }
 
