@@ -77,11 +77,11 @@ variable "aliases" {
 
 # outputs
 output "id" {
-  value = ""
+  value = aws_security_group.default.id
 }
 
 output "arn" {
-  value = ""
+  value = aws_security_group.default.arn
 }
 
 output "rules" {
