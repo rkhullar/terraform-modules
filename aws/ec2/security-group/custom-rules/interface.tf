@@ -32,7 +32,3 @@ variable "aliases" {
   description = "name -> source"
   default     = {}
 }
-
-output "debug" {
-  value = local.location_type_map
-}
