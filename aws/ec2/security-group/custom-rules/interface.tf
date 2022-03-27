@@ -20,3 +20,7 @@ variable "aliases" {
   description = "name -> source"
   default     = {}
 }
+
+output "debug" {
+  value = local.locations
+}
