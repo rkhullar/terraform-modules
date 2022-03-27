@@ -42,7 +42,7 @@ variable "sources" {
 
 variable "aliases" {
   type        = map(string)
-  description = "name -> security_group_id"
+  description = "name -> source"
   default     = {}
 }
 
