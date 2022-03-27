@@ -31,6 +31,6 @@ module "egress-rules" {
   protocol    = local.egress["protocol"]
   ports       = local.egress["ports"]
   port_ranges = local.egress["port_ranges"]
-  sources     = local.egress["target"]
+  sources     = local.egress["targets"]
   aliases     = var.aliases
 }
