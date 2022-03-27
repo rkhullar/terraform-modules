@@ -50,6 +50,17 @@ locals {
   egress_rules           = [for rule in local.rules_with_ports : rule if rule.type == "egress"]
   verified_ingress_rules = [for rule in local.ingress_rules : rule if rule.target_type == "security_group"]
   verified_egress_rules  = [for rule in local.egress_rules : rule if rule.source_type == "security_group"]
+  # add context for group id; combine source and target into location
+  ingress_rules_with_detail = [for rule in local.verified_ingress_rules : merge(rule, {
+    group_id      = local.location_type_map[rule.target].location_val
+    location      = local.location_type_map[rule.source].location_val
+    location_type = rule.source_type
+  })]
+  egress_rules_with_detail = [for rule in local.verified_egress_rules : merge(rule, {
+    group_id      = local.location_type_map[rule.source].location_val
+    location      = local.location_type_map[rule.target].location_val
+    location_type = rule.target_type
+  })]
 }
 
 output "debug" {
