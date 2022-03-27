@@ -27,3 +27,9 @@ locals {
   location_type_list = [for item in local.location_regex_list : item if can(regex("^${item.regex_val}$", item.location_val))]
   location_type_map  = { for item in local.location_type_list : item.location_key => item }
 }
+
+locals {
+  # filter rules by regex matched sources and targets
+  matched_locations       = keys(local.location_type_map)
+  location_verified_rules = [for rule in var.rules : rule if contains(local.matched_locations, rule.source) && contains(local.matched_locations, rule.target)]
+}

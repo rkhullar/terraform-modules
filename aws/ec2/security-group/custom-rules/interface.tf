@@ -13,6 +13,14 @@ variable "rules" {
     target     = string
   }))
   default = []
+  validation {
+    condition     = length([for rule in var.rules : rule if !contains(["ingress", "egress"], rule.type)]) == 0
+    error_message = "Allowed Values: type -> {ingress | egress}."
+  }
+  validation {
+    condition     = length([for rule in var.rules : rule if !contains(["tcp", "udp", "all", "-1"], rule.protocol)]) == 0
+    error_message = "Allowed Values: protocol -> {tcp | udp | all}."
+  }
 }
 
 variable "aliases" {
