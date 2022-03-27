@@ -32,3 +32,7 @@ variable "aliases" {
   description = "name -> source"
   default     = {}
 }
+
+output "detail" {
+  value = local.detail_map
+}

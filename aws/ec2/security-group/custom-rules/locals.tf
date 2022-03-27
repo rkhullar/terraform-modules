@@ -63,6 +63,8 @@ locals {
   })]
 }
 
-output "debug" {
-  value = concat(local.ingress_rules_with_detail, local.egress_rules_with_detail)
+locals {
+  # generate resource details
+  detail_list = concat(local.ingress_rules_with_detail, local.egress_rules_with_detail)
+  detail_map  = { for rule in local.detail_list : join("_", [rule.source, rule.type, rule.from_port, rule.to_port, rule.target]) => rule }
 }
