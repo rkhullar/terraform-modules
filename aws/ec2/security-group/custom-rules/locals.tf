@@ -64,5 +64,5 @@ locals {
 }
 
 output "debug" {
-  value = concat(local.verified_ingress_rules, local.verified_egress_rules)
+  value = concat(local.ingress_rules_with_detail, local.egress_rules_with_detail)
 }
