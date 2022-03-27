@@ -37,8 +37,13 @@ locals {
     source_type = local.location_type_map[rule.source].regex_key
     target_type = local.location_type_map[rule.target].regex_key
   })]
+  # determine port range details
+  rules_with_ports = [for rule in local.rules_with_type : merge(rule, {
+    from_port = coalesce(rule.port, tonumber(split("-", rule.port_range))[0])
+    to_port   = coalesce(rule.port, tonumber(split("-", rule.port_range))[1])
+  })]
 }
 
 output "debug" {
-  value = local.rules_with_type
+  value = local.rules_with_ports
 }
