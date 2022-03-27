@@ -40,7 +40,7 @@ locals {
   # determine port range details
   rules_with_ports = [for rule in local.rules_with_type : merge(rule, {
     from_port = rule.port != null ? rule.port : tonumber(split("-", rule.port_range)[0])
-    # to_port   = coalesce(rule.port, tonumber(split("-", rule.port_range))[1])
+    to_port   = rule.port != null ? rule.port : tonumber(split("-", rule.port_range)[1])
   })]
 }
 
