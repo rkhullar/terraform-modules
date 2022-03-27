@@ -14,4 +14,5 @@ resource "aws_security_group_rule" "default" {
   prefix_list_ids          = each.value.location_type == "prefix_list" ? [each.value.location] : null
   ipv6_cidr_blocks         = each.value.location_type == "cidr_block_v6" ? [each.value.location] : null
   self                     = each.value.location_type == "self" ? true : null
+  description              = each.value.descriptio
 }
