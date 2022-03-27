@@ -22,5 +22,5 @@ variable "aliases" {
 }
 
 output "debug" {
-  value = local.locations
+  value = local.location_type_map
 }
