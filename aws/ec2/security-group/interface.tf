@@ -42,7 +42,8 @@ variable "ingress_defaults" {
 }
 
 variable "ingress" {
-  type = any
+  type    = any
+  default = {}
 }
 
 # egress rules module
@@ -64,7 +65,8 @@ variable "egress_defaults" {
 }
 
 variable "egress" {
-  type = any
+  type    = any
+  default = {}
 }
 
 # custom
