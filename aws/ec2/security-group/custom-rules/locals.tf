@@ -44,6 +44,14 @@ locals {
   })]
 }
 
+locals {
+  # filter s.t. ingress targets and egress sources are security groups
+  ingress_rules          = [for rule in local.rules_with_ports : rule if rule.type == "ingress"]
+  egress_rules           = [for rule in local.rules_with_ports : rule if rule.type == "egress"]
+  verified_ingress_rules = [for rule in local.ingress_rules : rule if rule.target_type == "security_group"]
+  verified_egress_rules  = [for rule in local.egress_rules : rule if rule.source_type == "security_group"]
+}
+
 output "debug" {
-  value = local.rules_with_ports
+  value = concat(local.verified_ingress_rules, local.verified_egress_rules)
 }
