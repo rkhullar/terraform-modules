@@ -26,5 +26,8 @@ locals {
 
 locals {
   # preprocess rules
-  rules_with_keys = { for key in keys(local.names) : key => lookup(var.rules, key, {}) }
+  rules_with_keys = { for key in keys(local.names) : key => lookup(var.rules, key, {
+    ingress = {}
+    egress  = {}
+  }) }
 }
