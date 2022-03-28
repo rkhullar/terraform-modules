@@ -32,7 +32,7 @@ locals {
   } }
   rules = { for key, rule in local.rules_with_type : key => {
     for _type, leaf in rule : _type => {
-      for prop in ["ports", "port_ranges", "sources", "targets"] : prop => lookup(coalesce(leaf, {}), prop, [])
+      for prop in ["ports", "port_ranges", "sources", "targets"] : prop => try(leaf[prop], [])
   } } }
 }
 
