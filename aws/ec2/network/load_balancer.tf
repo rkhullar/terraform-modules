@@ -11,6 +11,6 @@ module "load-balancer" {
     protocol    = "tcp"
     ports       = var.rules["load_balancer"].ports
     port_ranges = var.rules["load_balancer"].port_ranges
-    targets     = var.rules["load_balancer"].targets
+    sources     = var.rules["load_balancer"].sources
   }
 }
