@@ -32,10 +32,10 @@ locals {
   } }
   rules = { for key, rule in local.rules_with_type : key => {
     for _type, leaf in ["ingress", "egress"] : _type => {
-      for prop in ["ports", "port_ranges", "sources", "targets"] : prop => leaf
+      for prop in ["ports", "port_ranges", "sources", "targets"] : prop => null
   } } }
 }
 
 output "debug-rules" {
-  value = local.rules_with_type
+  value = local.rules
 }
