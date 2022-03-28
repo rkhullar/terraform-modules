@@ -13,7 +13,7 @@ variable "names" {
     linux_runtime = optional(string)
     data_runtime  = optional(string)
   })
-  default = null
+  default = {}
 }
 
 variable "descriptions" {
@@ -22,22 +22,27 @@ variable "descriptions" {
     linux_runtime = optional(string)
     data_runtime  = optional(string)
   })
-  default = null
+  default = {}
 }
 
 variable "rules" {
   type = map(
     object({
       ingress = object({
-        ports       = list(number)
-        port_ranges = list(string)
+        ports       = optional(list(number))
+        port_ranges = optional(list(string))
         sources     = list(string)
       })
       egress = object({
-        ports       = list(number)
-        port_ranges = list(string)
+        ports       = optional(list(number))
+        port_ranges = optional(list(string))
         targets     = list(string)
       })
     })
   )
+  default = {}
+  validation {
+    condition     = length([]) == 0
+    error_message = "TBD <bad key> ."
+  }
 }
