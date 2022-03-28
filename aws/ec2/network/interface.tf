@@ -53,6 +53,29 @@ variable "aliases" {
   default     = {}
 }
 
+variable "enable_rules" {
+  type    = bool
+  default = true
+}
+
+variable "ingress_protocol" {
+  type    = string
+  default = "tcp"
+  validation {
+    condition     = contains(["tcp", "udp", "all", "-1"], var.ingress_protocol)
+    error_message = "Allowed Values: {tcp | udp | all}."
+  }
+}
+
+variable "egress_protocol" {
+  type    = string
+  default = "tcp"
+  validation {
+    condition     = contains(["tcp", "udp", "all", "-1"], var.egress_protocol)
+    error_message = "Allowed Values: {tcp | udp | all}."
+  }
+}
+
 output "security_groups" {
   value = {
     load_balancer = module.load-balancer.id

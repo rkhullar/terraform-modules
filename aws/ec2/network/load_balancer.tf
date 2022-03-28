@@ -7,16 +7,16 @@ module "load-balancer" {
   aliases     = local.aliases
 
   ingress = {
-    enable      = true
-    protocol    = "tcp"
+    enable      = var.enable_rules
+    protocol    = var.egress_protocol
     ports       = local.rules.load_balancer.ingress.ports
     port_ranges = local.rules.load_balancer.ingress.port_ranges
     sources     = local.rules.load_balancer.ingress.sources
   }
 
   egress = {
-    enable      = true
-    protocol    = "tcp"
+    enable      = var.enable_rules
+    protocol    = var.egress_protocol
     ports       = local.rules.load_balancer.egress.ports
     port_ranges = local.rules.load_balancer.egress.port_ranges
     targets     = local.rules.load_balancer.egress.targets
