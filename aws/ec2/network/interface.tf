@@ -58,6 +58,11 @@ variable "enable_rules" {
   default = true
 }
 
+variable "enable_implicit" {
+  type    = bool
+  default = true
+}
+
 variable "ingress_protocol" {
   type    = string
   default = "tcp"

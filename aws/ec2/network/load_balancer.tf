@@ -11,7 +11,7 @@ module "load-balancer" {
     protocol    = var.egress_protocol
     ports       = local.rules.load_balancer.ingress.ports
     port_ranges = local.rules.load_balancer.ingress.port_ranges
-    sources     = local.load_balancer_ingress_sources
+    sources     = local.load_balancer_sources
   }
 
   egress = {
@@ -24,7 +24,19 @@ module "load-balancer" {
 }
 
 locals {
-  load_balancer_ingress_sources = distinct(concat(
-    local.rules.load_balancer.ingress.sources, local.rules.linux_runtime.ingress.sources
+  extra_load_balancer_sources = local.enable_implicit_rules ? local.rules.linux_runtime.ingress.sources : []
+  load_balancer_sources = distinct(concat(
+    local.rules.load_balancer.ingress.sources, local.extra_load_balancer_sources
   ))
+}
+
+module "load-balancer-egress-linux-runtime" {
+  source      = "../security-group/rule"
+  enable      = local.enable_implicit_rules
+  id          = module.load-balancer.id
+  type        = "egress"
+  ports       = local.rules.linux_runtime.ingress.ports
+  port_ranges = local.rules.linux_runtime.ingress.port_ranges
+  sources     = ["linux_runtime"]
+  aliases     = local.default_aliases
 }

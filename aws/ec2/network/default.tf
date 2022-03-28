@@ -36,6 +36,6 @@ locals {
   } } }
 }
 
-output "debug-rules" {
-  value = local.rules
+locals {
+  enable_implicit_rules = var.enable_rules && var.enable_implicit
 }
