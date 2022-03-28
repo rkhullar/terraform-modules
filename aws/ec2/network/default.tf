@@ -28,10 +28,14 @@ locals {
   # preprocess rules
   rules_with_keys = { for key in keys(local.names) : key => lookup(var.rules, key, null) }
   rules_with_type = { for key, rule in local.rules_with_keys : key => {
-    for prop in ["ingress", "egress"] : prop => rule != null ? rule[prop] : null
+    for _type in ["ingress", "egress"] : _type => rule != null ? rule[_type] : null
   } }
+  rules = { for key, rule in local.rules_with_type : key => {
+    for _type, leaf in ["ingress", "egress"] : _type => {
+      for prop in ["ports", "port_ranges", "sources", "targets"] : prop => leaf != null ? leaf[prop] : null
+  } } }
 }
 
 output "debug-rules" {
-  value = local.rules_with_type
+  value = local.rules
 }
