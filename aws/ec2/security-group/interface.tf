@@ -71,8 +71,9 @@ variable "egress" {
 
 # custom
 variable "aliases" {
-  type    = map(string)
-  default = {}
+  type        = map(string)
+  description = "name -> source"
+  default     = {}
 }
 
 # outputs
