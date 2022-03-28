@@ -16,5 +16,5 @@ module "load-balancer" {
 }
 
 output "debug-lb" {
-  value = var.rules
+  value = var.rules["load_balancer"]
 }
