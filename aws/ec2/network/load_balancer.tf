@@ -11,7 +11,7 @@ module "load-balancer" {
     protocol    = var.egress_protocol
     ports       = local.rules.load_balancer.ingress.ports
     port_ranges = local.rules.load_balancer.ingress.port_ranges
-    sources     = local.rules.load_balancer.ingress.sources
+    sources     = local.load_balancer_ingress_sources
   }
 
   egress = {
@@ -21,4 +21,10 @@ module "load-balancer" {
     port_ranges = local.rules.load_balancer.egress.port_ranges
     targets     = local.rules.load_balancer.egress.targets
   }
+}
+
+locals {
+  load_balancer_ingress_sources = distinct(concat(
+    local.rules.load_balancer.ingress.sources, local.rules.linux_runtime.ingress.sources
+  ))
 }
