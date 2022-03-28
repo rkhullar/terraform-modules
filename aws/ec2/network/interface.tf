@@ -9,9 +9,9 @@ variable "tags" {
 
 variable "names" {
   type = object({
-    load_balancer = string
-    linux_runtime = string
-    data_runtime  = string
+    load_balancer = optional(string)
+    linux_runtime = optional(string)
+    data_runtime  = optional(string)
   })
 }
 
