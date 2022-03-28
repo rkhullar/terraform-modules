@@ -16,5 +16,5 @@ module "load-balancer" {
 }
 
 output "debug-lb" {
-  value = var.rules["load_balancer"]
+  value = var.rules["load_balancer"].ingress.ports
 }
