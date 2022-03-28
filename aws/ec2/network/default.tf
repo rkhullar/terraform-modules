@@ -37,5 +37,5 @@ locals {
 }
 
 output "debug-rules" {
-  value = local.rules
+  value = local.rules_with_type
 }
