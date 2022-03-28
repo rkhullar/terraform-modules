@@ -21,7 +21,7 @@ locals {
 }
 
 locals {
-  # preprocess rules
+  # preprocess rules to remove undefined or null values
   rules_with_keys = { for key in keys(local.names) : key => lookup(var.rules, key, null) }
   rules_with_type = { for key, rule in local.rules_with_keys : key => {
     for _type in ["ingress", "egress"] : _type => rule != null ? rule[_type] : null
