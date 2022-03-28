@@ -31,7 +31,7 @@ locals {
     for _type in ["ingress", "egress"] : _type => rule != null ? rule[_type] : null
   } }
   rules = { for key, rule in local.rules_with_type : key => {
-    for _type, leaf in ["ingress", "egress"] : _type => {
+    for _type, leaf in rule : _type => {
       for prop in ["ports", "port_ranges", "sources", "targets"] : prop => null
   } } }
 }
