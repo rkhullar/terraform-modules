@@ -28,7 +28,7 @@ locals {
   # preprocess rules
   rules_with_keys = { for key in keys(local.names) : key => lookup(var.rules, key, null) }
   rules_with_type = { for key, rule in local.rules_with_keys : key => {
-    for prop in ["ingress", "egress"] : prop => lookup(rule, prop, null)
+    for prop in ["ingress", "egress"] : prop => rule != null ? rule[prop] : null
   } }
 }
 
