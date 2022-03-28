@@ -3,7 +3,7 @@ resource "aws_security_group" "default" {
   name        = var.name
   name_prefix = var.name_prefix
   description = var.description
-  tags        = var.tags
+  tags        = merge(var.tags, { Name = coalesce(var.name, var.name_prefix) })
 }
 
 locals {

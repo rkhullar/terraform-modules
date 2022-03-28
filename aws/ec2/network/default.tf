@@ -14,10 +14,3 @@ locals {
     data_runtime  = "security group for data runtime"
   })
 }
-
-output "debug" {
-  value = {
-    descriptions = local.descriptions
-    rules        = var.rules
-  }
-}
