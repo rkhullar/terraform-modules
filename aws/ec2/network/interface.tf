@@ -28,21 +28,21 @@ variable "descriptions" {
 variable "rules" {
   type = map(
     object({
-      ingress = object({
+      ingress = optional(object({
         ports       = optional(list(number))
         port_ranges = optional(list(string))
         sources     = list(string)
-      })
-      egress = object({
+      }))
+      egress = optional(object({
         ports       = optional(list(number))
         port_ranges = optional(list(string))
         targets     = list(string)
-      })
+      }))
     })
   )
   default = {}
   validation {
     condition     = length([for key in keys(var.rules) : key if !contains(["load_balancer", "linux_runtime", "data_runtime"], key)]) == 0
-    error_message = "TBD <bad key> ."
+    error_message = "Allowed Keys: {load_balancer | linux_runtime | data_runtime}."
   }
 }
