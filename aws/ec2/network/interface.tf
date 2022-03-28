@@ -42,7 +42,7 @@ variable "rules" {
   )
   default = {}
   validation {
-    condition     = length([]) == 0
+    condition     = length([for key in keys(var.rules) : key if !contains(["load_balancer", "linux_runtime", "data_runtime"], key)]) == 0
     error_message = "TBD <bad key> ."
   }
 }
