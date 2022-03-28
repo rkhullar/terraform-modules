@@ -14,7 +14,3 @@ module "load-balancer" {
   #    sources     = var.rules["load_balancer"].ingress.sources
   #  }
 }
-
-output "debug-lb" {
-  value = local.rules_with_keys
-}

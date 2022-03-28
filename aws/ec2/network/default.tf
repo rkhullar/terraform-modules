@@ -27,4 +27,9 @@ locals {
 locals {
   # preprocess rules
   rules_with_keys = { for key in keys(local.names) : key => lookup(var.rules, key, null) }
+  rules_2         = { for key, rule in local.rules_with_keys : key => rule }
+}
+
+output "debug-rules" {
+  value = local.rules_2
 }
