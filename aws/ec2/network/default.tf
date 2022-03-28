@@ -8,7 +8,3 @@ module "custom-rules" {
   aliases = local.aliases
   rules   = var.custom_rules
 }
-
-output "x" {
-  value = module.custom-rules
-}
