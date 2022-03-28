@@ -6,5 +6,5 @@ module "custom-rules" {
   source  = "../security-group/custom-rules"
   enable  = var.enable_rules
   aliases = local.aliases
-  rules   = var.rules
+  rules   = var.custom_rules
 }
