@@ -46,3 +46,11 @@ variable "rules" {
     error_message = "Allowed Keys: {load_balancer | linux_runtime | data_runtime}."
   }
 }
+
+output "security_groups" {
+  value = {
+    load_balancer = module.load-balancer.id
+    linux_runtime = module.linux-runtime.id
+    data_runtime  = module.data-runtime.id
+  }
+}
