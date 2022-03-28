@@ -6,11 +6,15 @@ module "load-balancer" {
   vpc_id      = var.vpc_id
   aliases     = local.aliases
 
-  ingress = {
-    enable      = false
-    protocol    = "tcp"
-    ports       = var.rules["load_balancer"].ingress.ports
-    port_ranges = var.rules["load_balancer"].ingress.port_ranges
-    sources     = var.rules["load_balancer"].ingress.sources
-  }
+  #  ingress = {
+  #    enable      = false
+  #    protocol    = "tcp"
+  #    ports       = var.rules["load_balancer"].ingress.ports
+  #    port_ranges = var.rules["load_balancer"].ingress.port_ranges
+  #    sources     = var.rules["load_balancer"].ingress.sources
+  #  }
+}
+
+output "debug-lb" {
+  value = local.rules_with_keys
 }

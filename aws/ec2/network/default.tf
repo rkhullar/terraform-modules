@@ -16,10 +16,15 @@ locals {
 }
 
 locals {
+  aliases = merge(local.default_aliases, var.aliases)
   default_aliases = {
     load_balancer = module.load-balancer.id
     linux_runtime = module.linux-runtime.id
     data_runtime  = module.data-runtime.id
   }
-  aliases = merge(local.default_aliases, var.aliases)
+}
+
+locals {
+  # preprocess rules
+  rules_with_keys = { for key in keys(local.names) : key => lookup(var.rules, key, {}) }
 }
