@@ -13,7 +13,7 @@ variable "names" {
     linux_runtime = optional(string)
     data_runtime  = optional(string)
   })
-  default = {}
+  default = null
 }
 
 variable "descriptions" {
@@ -22,7 +22,7 @@ variable "descriptions" {
     linux_runtime = optional(string)
     data_runtime  = optional(string)
   })
-  default = {}
+  default = null
 }
 
 variable "rules" {
