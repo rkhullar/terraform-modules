@@ -4,4 +4,13 @@ module "load-balancer" {
   description = local.descriptions.load_balancer
   tags        = var.tags
   vpc_id      = var.vpc_id
+  aliases     = local.aliases
+
+  ingress = {
+    enable      = false
+    protocol    = "tcp"
+    ports       = var.rules["load_balancer"].ports
+    port_ranges = var.rules["load_balancer"].port_ranges
+    targets     = var.rules["load_balancer"].targets
+  }
 }
