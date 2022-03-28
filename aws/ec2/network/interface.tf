@@ -47,6 +47,12 @@ variable "rules" {
   }
 }
 
+variable "aliases" {
+  type        = map(string)
+  description = "name -> source"
+  default     = {}
+}
+
 output "security_groups" {
   value = {
     load_balancer = module.load-balancer.id
