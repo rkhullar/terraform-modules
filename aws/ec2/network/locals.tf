@@ -16,7 +16,7 @@ locals {
 
 locals {
   aliases         = merge(local.default_aliases, var.aliases)
-  default_aliases = module.default[*].id
+  default_aliases = {}
 }
 
 locals {
