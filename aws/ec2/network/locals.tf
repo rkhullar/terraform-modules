@@ -4,6 +4,9 @@ locals {
     linux_runtime = "linux-runtime"
     data_runtime  = "data-runtime"
   })
+}
+
+locals {
   descriptions = defaults(var.descriptions, {
     load_balancer = "security group for load balancer"
     linux_runtime = "security group for linux runtime"
@@ -12,12 +15,8 @@ locals {
 }
 
 locals {
-  aliases = merge(local.default_aliases, var.aliases)
-  default_aliases = {
-    load_balancer = module.load-balancer.id
-    linux_runtime = module.linux-runtime.id
-    data_runtime  = module.data-runtime.id
-  }
+  aliases         = merge(local.default_aliases, var.aliases)
+  default_aliases = {}
 }
 
 locals {
@@ -30,8 +29,4 @@ locals {
     for _type, leaf in rule : _type => {
       for prop in ["ports", "port_ranges", "sources", "targets"] : prop => coalesce(try(leaf[prop], null), [])
   } } }
-}
-
-locals {
-  enable_implicit_rules = var.enable_rules && var.enable_implicit
 }

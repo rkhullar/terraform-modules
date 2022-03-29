@@ -58,11 +58,6 @@ variable "enable_rules" {
   default = true
 }
 
-variable "enable_implicit" {
-  type    = bool
-  default = true
-}
-
 variable "ingress_protocol" {
   type    = string
   default = "tcp"
@@ -95,9 +90,5 @@ variable "custom_rules" {
 }
 
 output "security_groups" {
-  value = {
-    load_balancer = module.load-balancer.id
-    linux_runtime = module.linux-runtime.id
-    data_runtime  = module.data-runtime.id
-  }
+  value = {}
 }
