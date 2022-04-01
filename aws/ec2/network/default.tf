@@ -2,7 +2,7 @@ terraform {
   experiments = [module_variable_optional_attrs]
 }
 
-module "default" {
+module "security-groups" {
   for_each    = local.rules
   source      = "../security-group"
   name        = local.names[each.key]

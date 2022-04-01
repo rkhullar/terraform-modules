@@ -90,5 +90,5 @@ variable "custom_rules" {
 }
 
 output "security_groups" {
-  value = module.default
+  value = local.security_groups
 }
