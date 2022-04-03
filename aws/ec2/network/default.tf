@@ -56,12 +56,7 @@ data "aws_security_groups" "default" {
 }
 
 locals {
-  aliases         = merge(local.security_groups, var.aliases)
+  aliases         = merge(local.default_aliases, var.aliases)
   security_groups = zipmap(keys(module.security-groups), values(module.security-groups)[*].id)
-  #default_aliases = values(data.aws_security_groups.default)[*].ids[0]
-  default_aliases = data.aws_security_groups.default
-}
-
-output "debug" {
-  value = local.default_aliases
+  default_aliases = zipmap(keys(data.aws_security_groups.default), values(data.aws_security_groups.default)[*].ids[0])
 }
