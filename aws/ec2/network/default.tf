@@ -35,10 +35,23 @@ module "custom-rules" {
   rules   = var.custom_rules
 }
 
+/*
 data "aws_security_group" "default" {
   for_each = local.names
   name     = each.value
   vpc_id   = var.vpc_id
+}
+*/
+
+data "aws_security_groups" "default" {
+  filter {
+    name   = "name"
+    values = values(local.names)
+  }
+  filter {
+    name   = "vpc-id"
+    values = [var.vpc_id]
+  }
 }
 
 locals {
@@ -47,5 +60,5 @@ locals {
 }
 
 output "debug" {
-  value = data.aws_security_group.default
+  value = data.aws_security_groups.default
 }
