@@ -9,7 +9,9 @@ module "security-groups" {
   description = local.descriptions[each.key]
   tags        = var.tags
   vpc_id      = var.vpc_id
-  aliases     = var.enable_rules ? local.aliases : {}
+  aliases = !var.enable_rules ? {} : merge(
+    zipmap(keys(module.security-groups), values(module.security-groups)[*].id), var.aliases
+  )
 
   ingress = {
     enable      = var.enable_rules

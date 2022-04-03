@@ -14,10 +14,12 @@ locals {
   })
 }
 
+/*
 locals {
   aliases         = merge(local.security_groups, var.aliases)
   security_groups = zipmap(keys(module.security-groups), values(module.security-groups)[*].id)
 }
+*/
 
 locals {
   # preprocess rules to remove undefined or null values
