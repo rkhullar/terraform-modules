@@ -15,14 +15,8 @@ locals {
 }
 
 locals {
-  aliases         = merge(local.default_aliases, var.aliases)
+  aliases         = merge(local.security_groups, var.aliases)
   security_groups = zipmap(keys(module.security-groups), values(module.security-groups)[*].id)
-  default_aliases = {}
-  #  default_aliases = {
-  #    load_balancer = lookup(local.security_groups, "load-balancer", null)
-  #    linux_runtime = lookup(local.security_groups, "linux-runtime", null)
-  #    data_runtime  = lookup(local.security_groups, "data-runtime", null)
-  #  }
 }
 
 locals {

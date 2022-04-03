@@ -92,7 +92,3 @@ variable "custom_rules" {
 output "security_groups" {
   value = local.security_groups
 }
-
-output "debug" {
-  value = module.security-groups
-}
