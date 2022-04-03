@@ -9,7 +9,7 @@ module "security-groups" {
   description = local.descriptions[each.key]
   tags        = var.tags
   vpc_id      = var.vpc_id
-  aliases     = local.aliases
+  aliases     = var.enable_rules ? local.aliases : {}
 
   ingress = {
     enable      = var.enable_rules
