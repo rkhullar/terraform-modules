@@ -44,9 +44,10 @@ data "aws_security_group" "default" {
 */
 
 data "aws_security_groups" "default" {
+  for_each = local.names
   filter {
     name   = "group-name"
-    values = values(local.names)
+    values = [each.value]
   }
   filter {
     name   = "vpc-id"
