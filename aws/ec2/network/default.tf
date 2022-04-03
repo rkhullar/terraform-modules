@@ -9,7 +9,7 @@ module "security-groups" {
   description = local.descriptions[each.key]
   tags        = var.tags
   vpc_id      = var.vpc_id
-  aliases     = var.aliases
+  aliases     = local.aliases
 
   ingress = {
     enable      = var.enable_rules
@@ -31,17 +31,9 @@ module "security-groups" {
 module "custom-rules" {
   source  = "../security-group/custom-rules"
   enable  = var.enable_rules
-  aliases = var.aliases
+  aliases = local.aliases
   rules   = var.custom_rules
 }
-
-/*
-data "aws_security_group" "default" {
-  for_each = local.names
-  name     = each.value
-  vpc_id   = var.vpc_id
-}
-*/
 
 data "aws_security_groups" "default" {
   for_each = local.names
