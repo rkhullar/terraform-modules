@@ -8,18 +8,21 @@ variable "tags" {
 }
 
 variable "policies" {
-  type    = map(string)
-  default = {}
+  type        = map(string)
+  description = "key -> policy arn"
+  default     = {}
 }
 
 variable "managed_policies" {
-  type    = set(string)
-  default = []
+  type        = set(string)
+  description = "aws managed policy names"
+  default     = []
 }
 
 variable "inline_policies" {
-  type    = map(string)
-  default = {}
+  type        = map(string)
+  description = "key -> policy json"
+  default     = {}
 }
 
 output "output" {

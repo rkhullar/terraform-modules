@@ -24,7 +24,7 @@ variable "policies" {
 }
 
 variable "managed_policies" {
-  type        = list(string)
+  type        = set(string)
   description = "aws managed policy names"
   default     = []
 }

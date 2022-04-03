@@ -25,7 +25,7 @@ resource "aws_iam_role_policy_attachment" "default" {
 }
 
 resource "aws_iam_role_policy_attachment" "managed" {
-  for_each   = toset(var.managed_policies)
+  for_each   = var.managed_policies
   role       = aws_iam_role.default.name
   policy_arn = "arn:aws:iam::aws:policy/${each.value}"
 }
