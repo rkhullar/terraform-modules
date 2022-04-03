@@ -9,7 +9,7 @@ module "security-groups" {
   description = local.descriptions[each.key]
   tags        = var.tags
   vpc_id      = var.vpc_id
-  aliases     = var.enable_rules ? local.aliases : null
+  aliases     = var.aliases
 
   ingress = {
     enable      = var.enable_rules
@@ -32,6 +32,20 @@ module "custom-rules" {
   source  = "../security-group/custom-rules"
   enable  = var.enable_rules
   aliases = var.aliases
-  # aliases = local.aliases
-  rules = var.custom_rules
+  rules   = var.custom_rules
+}
+
+data "aws_security_group" "default" {
+  for_each = local.names
+  name     = each.value
+  vpc_id   = var.vpc_id
+}
+
+locals {
+  aliases         = merge(local.security_groups, var.aliases)
+  security_groups = zipmap(keys(module.security-groups), values(module.security-groups)[*].id)
+}
+
+output "debug" {
+  value = data.aws_security_group.default
 }
