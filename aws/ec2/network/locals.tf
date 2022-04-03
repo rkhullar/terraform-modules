@@ -18,9 +18,9 @@ locals {
   aliases         = merge(local.default_aliases, var.aliases)
   security_groups = values(module.security-groups)[*].id
   default_aliases = {
-    load_balancer = local.security_groups["load-balancer"]
-    linux_runtime = local.security_groups["linux-runtime"]
-    data_runtime  = local.security_groups["data-runtime"]
+    load_balancer = lookup(local.security_groups, "load-balancer", null)
+    linux_runtime = lookup(local.security_groups, "linux-runtime", null)
+    data_runtime  = lookup(local.security_groups, "data-runtime", null)
   }
 }
 
