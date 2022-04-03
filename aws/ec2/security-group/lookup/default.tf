@@ -1,12 +1,19 @@
 data "aws_security_groups" "default" {
   for_each = var.names
   filter {
+    name   = "vpc-id"
+    values = [var.vpc_id]
+  }
+  filter {
     name   = "group-name"
     values = [each.value]
   }
-  filter {
-    name   = "vpc-id"
-    values = [var.vpc_id]
+  dynamic "filter" {
+    for_each = var.tags
+    content {
+      name   = "tag:${filter.key}"
+      values = [filter.value]
+    }
   }
 }
 
