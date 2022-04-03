@@ -15,6 +15,12 @@ locals {
 }
 
 locals {
+  aliases         = merge(module.security-groups-lookup.output, var.aliases)
+  enable_rules    = var.enable_rules && module.security-groups-lookup.status
+  security_groups = zipmap(keys(module.security-groups), values(module.security-groups)[*].id)
+}
+
+locals {
   # preprocess rules to remove undefined or null values
   rules_with_keys = { for key in keys(local.names) : key => lookup(var.rules, key, null) }
   rules_with_type = { for key, rule in local.rules_with_keys : key => {
