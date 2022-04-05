@@ -1,7 +1,7 @@
 locals {
   remote = defaults(coalesce(var.remote, {}), {
     account     = true
-    environment = null
+    environment = ""
   })
 }
 
