@@ -6,11 +6,10 @@ locals {
 }
 
 locals {
-  bucket = "${local.remote.source}-terraformstate-${var.region}-${local.remote.environment}-${var.namespace}"
-  # mapping = data.terraform_remote_state.vpc.outputs
+  bucket  = "${local.remote.source}-terraformstate-${var.region}-${local.remote.environment}-${var.namespace}"
+  mapping = data.terraform_remote_state.vpc.outputs
 }
 
-/*
 data "terraform_remote_state" "vpc" {
   backend = "s3"
   config = {
@@ -19,4 +18,3 @@ data "terraform_remote_state" "vpc" {
     region = var.region
   }
 }
-*/

@@ -19,7 +19,6 @@ variable "remote_environment" {
 }
 
 # outputs
-/*
 output "id" {
   value = local.mapping.id
 }
@@ -30,9 +29,4 @@ output "cidr" {
 
 output "subnets" {
   value = local.mapping.subnets
-}
-*/
-
-output "debug" {
-  value = { remote = local.remote, bucket = local.bucket }
 }
