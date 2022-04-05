@@ -13,7 +13,7 @@ variable "remote" {
     account     = bool
     environment = string
   })
-  default = null
+  default = {}
 }
 
 # outputs
