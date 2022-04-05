@@ -8,12 +8,20 @@ variable "environment" { type = string }
 variable "region" { type = string }
 
 # remotes
-variable "remote" {
+variable "remote_defaults" {
   type = object({
     account     = bool
     environment = string
   })
-  default = {}
+  default = {
+    account     = true
+    environment = null
+  }
+}
+
+variable "remote" {
+  type    = any
+  default = null
 }
 
 # outputs

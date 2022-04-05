@@ -1,8 +1,14 @@
+/*
 locals {
   remote = defaults(var.remote, {
     account     = true
     environment = var.environment
   })
+}
+*/
+
+locals {
+  remote = merge(var.remote_defaults, coalesce(var.remote, {}))
 }
 
 locals {
