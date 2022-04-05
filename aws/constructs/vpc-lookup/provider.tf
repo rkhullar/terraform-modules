@@ -14,3 +14,7 @@ provider "aws" {
   region              = var.region
   allowed_account_ids = [var.account_id]
 }
+
+terraform {
+  experiments = [module_variable_optional_attrs]
+}

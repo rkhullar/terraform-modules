@@ -8,14 +8,11 @@ variable "environment" { type = string }
 variable "region" { type = string }
 
 # remotes
-variable "account_vpc" {
-  type    = bool
-  default = true
-}
-
-variable "vpc_env" {
-  type    = string
-  default = null
+variable "remote" {
+  type = object({
+    account     = bool
+    environment = string
+  })
 }
 
 # outputs

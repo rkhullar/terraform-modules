@@ -1,7 +1,13 @@
 locals {
-  tf_source = var.account_vpc ? var.account : var.project
-  src_env   = coalesce(var.vpc_env, var.environment)
-  tf_bucket = "${local.tf_source}-terraformstate-${var.region}-${local.src_env}-${var.namespace}"
+  remote = defaults(var.remote, {
+    account     = true
+    environment = var.environment
+  })
+}
+
+locals {
+  tf_source = local.remote.account ? var.account : var.project
+  tf_bucket = "${local.tf_source}-terraformstate-${var.region}-${local.remote.environment}-${var.namespace}"
   mapping   = data.terraform_remote_state.vpc.outputs
 }
 
