@@ -10,8 +10,8 @@ variable "region" { type = string }
 # remotes
 variable "remote" {
   type = object({
-    account     = bool
-    environment = string
+    account     = optional(bool)
+    environment = optional(string)
   })
   default = null
 }
