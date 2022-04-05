@@ -8,11 +8,13 @@ variable "environment" { type = string }
 variable "region" { type = string }
 
 # remotes
-variable "remote" {
-  type = object({
-    account     = optional(bool)
-    environment = optional(string)
-  })
+variable "shared" {
+  type    = bool
+  default = true
+}
+
+variable "remote_environment" {
+  type    = string
   default = null
 }
 
