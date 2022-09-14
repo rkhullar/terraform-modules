@@ -94,3 +94,7 @@ output "subnets" {
 output "security_groups" {
   value = module.default.security_groups
 }
+
+output "temp" {
+  value = "hello world"
+}
