@@ -3,10 +3,10 @@ terraform {
 }
 
 module "security-groups" {
-  for_each    = local.descriptions
+  for_each    = local.base_names
   source      = "../../security-group"
-  name        = each.key
-  description = each.value
+  name        = local.names[each.key]
+  description = local.descriptions[each.key]
   tags        = var.tags
   vpc_id      = var.vpc_id
 }

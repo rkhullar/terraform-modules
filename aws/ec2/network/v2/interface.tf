@@ -7,6 +7,16 @@ variable "tags" {
   default = {}
 }
 
+variable "prefix" {
+  type     = string
+  nullable = true
+}
+
+variable "suffix" {
+  type     = string
+  nullable = true
+}
+
 variable "security_groups" {
   type = set(object({
     name        = string

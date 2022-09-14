@@ -1,6 +1,7 @@
 locals {
-  names        = toset([for data in var.security_groups : data.name])
-  descriptions = { for data in var.security_groups : data.name => defaults(data.description, data.name) }
+  base_names   = toset([for data in var.security_groups : data.name])
+  names        = { for data in var.security_groups : data.name => join("-", compact([var.prefix, data.name, var.suffix])) }
+  descriptions = { for data in var.security_groups : data.name => defaults(data.description, local.names[data.name]) }
 }
 
 locals {
