@@ -18,11 +18,14 @@ variable "suffix" {
   default = null
 }
 
-variable "security_groups" {
-  type = set(object({
-    name        = string
-    description = optional(string)
-  }))
+variable "names" {
+  type = set(string)
+}
+
+variable "descriptions" {
+  type     = map(string)
+  default  = {}
+  nullable = false
 }
 
 variable "aliases" {
@@ -58,8 +61,12 @@ output "security_groups" {
 
 output "debug" {
   value = {
+    names        = var.names
+    descriptions = var.descriptions
     aliases      = var.aliases
     enable_rules = var.enable_rules
     rules        = var.rules
+    prefix       = var.prefix
+    suffix       = var.suffix
   }
 }
