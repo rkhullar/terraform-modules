@@ -60,9 +60,3 @@ variable "rules" {
 output "security_groups" {
   value = local.security_groups
 }
-
-output "debug" {
-  value = {
-    status = module.security-groups-lookup.status
-  }
-}
