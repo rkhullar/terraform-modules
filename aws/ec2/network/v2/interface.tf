@@ -3,18 +3,19 @@ variable "vpc_id" {
 }
 
 variable "tags" {
-  type    = map(string)
-  default = {}
+  type     = map(string)
+  default  = {}
+  nullable = false
 }
 
 variable "prefix" {
-  type     = string
-  nullable = true
+  type    = string
+  default = null
 }
 
 variable "suffix" {
-  type     = string
-  nullable = true
+  type    = string
+  default = null
 }
 
 variable "security_groups" {
@@ -28,11 +29,13 @@ variable "aliases" {
   type        = map(string)
   description = "name -> source"
   default     = {}
+  nullable    = false
 }
 
 variable "enable_rules" {
-  type    = bool
-  default = true
+  type     = bool
+  default  = true
+  nullable = false
 }
 
 variable "rules" {
@@ -45,7 +48,8 @@ variable "rules" {
     target      = string
     description = optional(string)
   }))
-  default = []
+  default  = []
+  nullable = false
 }
 
 output "security_groups" {
