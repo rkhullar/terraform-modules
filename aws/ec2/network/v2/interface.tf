@@ -51,3 +51,11 @@ variable "rules" {
 output "security_groups" {
   value = local.security_groups
 }
+
+output "debug" {
+  value = {
+    aliases      = var.aliases
+    enable_rules = var.enable_rules
+    rules        = var.rules
+  }
+}
