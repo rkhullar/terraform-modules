@@ -4,8 +4,8 @@ variable "vpc_id" {
 
 variable "tags" {
   type     = map(string)
-  default  = {}
   nullable = false
+  default  = {}
 }
 
 variable "prefix" {
@@ -24,21 +24,21 @@ variable "names" {
 
 variable "descriptions" {
   type     = map(string)
-  default  = {}
   nullable = false
+  default  = {}
 }
 
 variable "aliases" {
   type        = map(string)
+  nullable    = false
   description = "name -> source"
   default     = {}
-  nullable    = true
 }
 
 variable "enable_rules" {
   type     = bool
-  default  = true
   nullable = false
+  default  = true
 }
 
 variable "rules" {
@@ -51,7 +51,12 @@ variable "rules" {
     target      = string
     description = optional(string)
   }))
+  nullable = false
   default  = []
+}
+
+variable "temp" {
+  type     = number
   nullable = false
 }
 
@@ -68,5 +73,6 @@ output "debug" {
     rules        = var.rules
     prefix       = var.prefix
     suffix       = var.suffix
+    temp         = var.temp
   }
 }
