@@ -1,5 +1,6 @@
 variable "vpc_id" {
-  type = string
+  type     = string
+  nullable = false
 }
 
 variable "tags" {
@@ -19,7 +20,8 @@ variable "suffix" {
 }
 
 variable "names" {
-  type = set(string)
+  type     = set(string)
+  nullable = false
 }
 
 variable "descriptions" {
