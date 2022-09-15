@@ -44,6 +44,36 @@ variable "enable_rules" {
 }
 
 variable "rules" {
+  type = map(
+    object({
+      ingress = optional(object({
+        protocol    = optional(string)
+        ports       = optional(list(number))
+        port_ranges = optional(list(string))
+        sources     = list(string)
+      }))
+      egress = optional(object({
+        protocol    = optional(string)
+        ports       = optional(list(number))
+        port_ranges = optional(list(string))
+        targets     = list(string)
+      }))
+    })
+  )
+  nullable = false
+  default  = {}
+}
+
+variable "default_protocol" {
+  type    = string
+  default = "tcp"
+  validation {
+    condition     = contains(["tcp", "udp", "all", "-1"], var.default_protocol)
+    error_message = "Allowed Values: {tcp | udp | all}."
+  }
+}
+
+variable "custom_rules" {
   type = set(object({
     type        = string # ingress | egress
     protocol    = string # tcp | udp | all

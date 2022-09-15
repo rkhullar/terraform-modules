@@ -9,6 +9,23 @@ module "security-groups" {
   description = local.descriptions[each.key]
   tags        = var.tags
   vpc_id      = var.vpc_id
+  aliases     = local.aliases
+
+  ingress = {
+    enable      = local.enable_rules
+    protocol    = local.rules[each.key].ingress.protocol
+    ports       = local.rules[each.key].ingress.ports
+    port_ranges = local.rules[each.key].ingress.port_ranges
+    sources     = local.rules[each.key].ingress.sources
+  }
+
+  egress = {
+    enable      = local.enable_rules
+    protocol    = local.rules[each.key].egress.protocol
+    ports       = local.rules[each.key].egress.ports
+    port_ranges = local.rules[each.key].egress.port_ranges
+    targets     = local.rules[each.key].egress.targets
+  }
 }
 
 module "security-groups-lookup" {
@@ -21,5 +38,5 @@ module "rules" {
   source  = "../../security-group/custom-rules"
   enable  = local.enable_rules
   aliases = local.aliases
-  rules   = var.rules
+  rules   = var.custom_rules
 }
