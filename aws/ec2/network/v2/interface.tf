@@ -32,7 +32,7 @@ variable "aliases" {
   type        = map(string)
   description = "name -> source"
   default     = {}
-  nullable    = false
+  nullable    = true
 }
 
 variable "enable_rules" {
