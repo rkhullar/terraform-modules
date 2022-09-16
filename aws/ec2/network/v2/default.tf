@@ -2,6 +2,14 @@ terraform {
   experiments = [module_variable_optional_attrs]
 }
 
+locals {
+  names           = { for name in var.names : name => join("-", compact([var.prefix, name, var.suffix])) }
+  descriptions    = { for name in var.names : name => lookup(var.descriptions, name, local.names[name]) }
+  aliases         = merge(module.security-groups-lookup.output, var.aliases)
+  enable_rules    = var.enable_rules && module.security-groups-lookup.status
+  security_groups = zipmap(keys(module.security-groups), values(module.security-groups)[*].id)
+}
+
 module "security-groups" {
   for_each    = var.names
   source      = "../../security-group"
@@ -13,18 +21,18 @@ module "security-groups" {
 
   ingress = {
     enable      = local.enable_rules
-    protocol    = local.rules[each.key].ingress.protocol
-    ports       = local.rules[each.key].ingress.ports
-    port_ranges = local.rules[each.key].ingress.port_ranges
-    sources     = local.rules[each.key].ingress.sources
+    protocol    = try(var.rules[each.key].ingress.protocol, var.default_protocol)
+    ports       = try(var.rules[each.key].ingress.ports, [])
+    port_ranges = try(var.rules[each.key].ingress.port_ranges, [])
+    sources     = try(var.rules[each.key].ingress.sources, [])
   }
 
   egress = {
     enable      = local.enable_rules
-    protocol    = local.rules[each.key].egress.protocol
-    ports       = local.rules[each.key].egress.ports
-    port_ranges = local.rules[each.key].egress.port_ranges
-    targets     = local.rules[each.key].egress.targets
+    protocol    = try(var.rules[each.key].egress.protocol, var.default_protocol)
+    ports       = try(var.rules[each.key].egress.ports, [])
+    port_ranges = try(var.rules[each.key].egress.port_ranges, [])
+    targets     = try(var.rules[each.key].egress.targets, [])
   }
 }
 
