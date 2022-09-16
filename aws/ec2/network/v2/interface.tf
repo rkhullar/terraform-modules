@@ -64,15 +64,6 @@ variable "rules" {
   default  = {}
 }
 
-variable "default_protocol" {
-  type    = string
-  default = "tcp"
-  validation {
-    condition     = contains(["tcp", "udp", "all", "-1"], var.default_protocol)
-    error_message = "Allowed Values: {tcp | udp | all}."
-  }
-}
-
 variable "custom_rules" {
   type = set(object({
     type        = string # ingress | egress

@@ -21,18 +21,18 @@ module "security-groups" {
 
   ingress = {
     enable      = local.enable_rules
-    protocol    = try(var.rules[each.key].ingress.protocol, var.default_protocol)
-    ports       = try(var.rules[each.key].ingress.ports, [])
-    port_ranges = try(var.rules[each.key].ingress.port_ranges, [])
-    sources     = try(var.rules[each.key].ingress.sources, [])
+    protocol    = try(var.rules[each.key].ingress.protocol, null)
+    ports       = try(var.rules[each.key].ingress.ports, null)
+    port_ranges = try(var.rules[each.key].ingress.port_ranges, null)
+    sources     = try(var.rules[each.key].ingress.sources, null)
   }
 
   egress = {
     enable      = local.enable_rules
-    protocol    = try(var.rules[each.key].egress.protocol, var.default_protocol)
-    ports       = try(var.rules[each.key].egress.ports, [])
-    port_ranges = try(var.rules[each.key].egress.port_ranges, [])
-    targets     = try(var.rules[each.key].egress.targets, [])
+    protocol    = try(var.rules[each.key].egress.protocol, null)
+    ports       = try(var.rules[each.key].egress.ports, null)
+    port_ranges = try(var.rules[each.key].egress.port_ranges, null)
+    targets     = try(var.rules[each.key].egress.targets, null)
   }
 }
 
