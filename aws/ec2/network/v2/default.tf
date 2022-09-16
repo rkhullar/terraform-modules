@@ -24,7 +24,7 @@ module "security-groups" {
     protocol    = try(var.rules[each.key].ingress.protocol, null)
     ports       = try(var.rules[each.key].ingress.ports, null)
     port_ranges = try(var.rules[each.key].ingress.port_ranges, null)
-    sources     = try(var.rules[each.key].ingress.sources, null)
+    sources     = try(var.rules[each.key].ingress.sources, [])
   }
 
   egress = {
@@ -32,7 +32,7 @@ module "security-groups" {
     protocol    = try(var.rules[each.key].egress.protocol, null)
     ports       = try(var.rules[each.key].egress.ports, null)
     port_ranges = try(var.rules[each.key].egress.port_ranges, null)
-    targets     = try(var.rules[each.key].egress.targets, null)
+    targets     = try(var.rules[each.key].egress.targets, [])
   }
 }
 
