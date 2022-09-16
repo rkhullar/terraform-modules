@@ -46,7 +46,6 @@ variable "aliases" {
 
 variable "enable_rules" {
   type        = bool
-  description = "name -> source"
   default     = true
 }
 
