@@ -3,7 +3,7 @@ terraform {
 }
 
 module "default" {
-  source           = "../../ec2/network"
+  source           = "../../../ec2/network/v1"
   vpc_id           = local.vpc.id
   tags             = local.common_tags
   names            = local.security_group_names

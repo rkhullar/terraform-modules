@@ -1,6 +1,7 @@
 variable "enable" {
-  type    = bool
-  default = true
+  type     = bool
+  nullable = false
+  default  = true
 }
 
 variable "rules" {
@@ -13,7 +14,8 @@ variable "rules" {
     target      = string
     description = optional(string)
   }))
-  default = []
+  nullable = false
+  default  = []
   validation {
     condition     = length([for rule in var.rules : rule if !contains(["ingress", "egress"], rule.type)]) == 0
     error_message = "Allowed Values: type -> {ingress | egress}."
@@ -30,8 +32,9 @@ variable "rules" {
 
 variable "aliases" {
   type        = map(string)
-  description = "name -> source"
+  nullable    = false
   default     = {}
+  description = "name -> source"
 }
 
 output "detail" {
