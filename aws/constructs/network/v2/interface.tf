@@ -8,27 +8,53 @@ variable "environment" { type = string }
 variable "region" { type = string }
 
 # construct
+variable "names" {
+  type     = set(string)
+  nullable = false
+}
+
+variable "descriptions" {
+  type     = map(string)
+  nullable = false
+  default  = {}
+}
+
+variable "aliases" {
+  type        = map(string)
+  nullable    = false
+  description = "name -> source"
+  default     = {}
+}
+
+variable "enable_rules" {
+  type     = bool
+  nullable = false
+  default  = true
+}
+
 variable "rules" {
-  default = {}
   type = map(
     object({
       ingress = optional(object({
+        protocol    = optional(string)
         ports       = optional(list(number))
         port_ranges = optional(list(string))
         sources     = list(string)
       }))
       egress = optional(object({
+        protocol    = optional(string)
         ports       = optional(list(number))
         port_ranges = optional(list(string))
         targets     = list(string)
       }))
     })
   )
+  nullable = false
+  default  = {}
 }
 
 variable "custom_rules" {
-  default = []
-  type = list(object({
+  type = set(object({
     type        = string # ingress | egress
     protocol    = string # tcp | udp | all
     port        = optional(number)
@@ -37,44 +63,8 @@ variable "custom_rules" {
     target      = string
     description = optional(string)
   }))
-}
-
-variable "aliases" {
-  type    = map(string)
-  default = {}
-}
-
-variable "enable_rules" {
-  type        = bool
-  default     = true
-}
-
-variable "ingress_protocol" {
-  type    = string
-  default = "tcp"
-}
-
-variable "egress_protocol" {
-  type    = string
-  default = "tcp"
-}
-
-variable "names" {
-  default = {}
-  type = object({
-    load_balancer = optional(string)
-    linux_runtime = optional(string)
-    data_runtime  = optional(string)
-  })
-}
-
-variable "descriptions" {
-  default = {}
-  type = object({
-    load_balancer = optional(string)
-    linux_runtime = optional(string)
-    data_runtime  = optional(string)
-  })
+  nullable = false
+  default  = []
 }
 
 # output
