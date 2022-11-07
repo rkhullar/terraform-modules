@@ -13,13 +13,19 @@ variable "role" {
   nullable = false
 }
 
+variable "runtime" {
+  type     = string
+  nullable = false
+}
+
 variable "handler" {
   type     = string
   nullable = false
 }
 
-variable "runtime" {
+variable "template" {
   type     = string
+  default  = "default"
   nullable = false
 }
 
@@ -37,12 +43,6 @@ variable "memory" {
   type     = number
   default  = 128
   nullable = true
-}
-
-variable "template" {
-  type     = string
-  default  = "default"
-  nullable = false
 }
 
 variable "timeout" {
@@ -63,6 +63,25 @@ variable "ignore_case" {
   nullable = false
 }
 
+variable "layers" {
+  type     = list(string)
+  default  = []
+  nullable = false
+}
+
+variable "publish" {
+  type     = bool
+  default  = false
+  nullable = true
+}
+
+variable "reserved_concurrent_executions" {
+  type        = number
+  default     = -1
+  nullable    = true
+  description = "0 disables the lambda; -1 removes concurrency limits"
+}
+
 variable "security_groups" {
   type     = list(string)
   default  = []
@@ -73,19 +92,6 @@ variable "subnets" {
   type     = list(string)
   default  = []
   nullable = true
-}
-
-variable "layers" {
-  type     = list(string)
-  default  = []
-  nullable = false
-}
-
-variable "reserved_concurrent_executions" {
-  type        = number
-  default     = -1
-  nullable    = true
-  description = "0 disables the lambda; -1 removes concurrency limits"
 }
 
 output "output" {
