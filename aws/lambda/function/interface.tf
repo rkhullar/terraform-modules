@@ -23,9 +23,33 @@ variable "runtime" {
   nullable = false
 }
 
-variable "memory" { default = 128 }
-variable "template" { default = "api-gw-hello" }
-variable "timeout" { default = 30 }
+variable "architecture" {
+  type     = string
+  default  = "x86_64"
+  nullable = false
+  validation {
+    condition     = contains(["x86_64", "arm64"], var.architecture)
+    error_message = "Allowed Values: architecture -> {x86_64, arm64}."
+  }
+}
+
+variable "memory" {
+  type     = number
+  default  = 128
+  nullable = true
+}
+
+variable "template" {
+  type     = string
+  default  = "default"
+  nullable = false
+}
+
+variable "timeout" {
+  type     = number
+  default  = 3
+  nullable = false
+}
 
 variable "environment" {
   type     = map(string)
@@ -58,9 +82,10 @@ variable "layers" {
 }
 
 variable "reserved_concurrent_executions" {
-  type     = number
-  default  = -1 # set to -1 to remove all concurrency limitations
-  nullable = true
+  type        = number
+  default     = -1
+  nullable    = true
+  description = "0 disables the lambda; -1 removes concurrency limits"
 }
 
 output "output" {

@@ -1,18 +1,3 @@
-locals {
-  # https://docs.aws.amazon.com/lambda/latest/dg/configuration-envvars.html#configuration-envvars-runtime
-  reserved_environment_keys = [
-    "-handler", "-x-amzn-trace-id", "aws-region", "aws-execution-env",
-    "aws-lambda-function-name", "aws-lambda-function-memory-size", "aws-lambda-function-version", "aws-lambda-initialization-type",
-    "aws-lambda-log-group-name", "aws-lambda-log-stream-name",
-    "aws-access-key-id", "aws-secret-access-key", "aws-session-token",
-    "tz", "lambda-task-root", "lambda-runtime-dir"
-  ]
-}
-
-data "aws_iam_role" "default" {
-  name = var.role
-}
-
 resource "aws_lambda_function" "default" {
   function_name                  = var.name
   handler                        = var.handler
@@ -48,4 +33,12 @@ resource "aws_lambda_function" "default" {
     ignore_changes = [source_code_hash, last_modified, filename, layers]
     # ignore_changes = [source_code_hash, last_modified, filename, layers]
   }
+}
+
+data "aws_iam_role" "default" {
+  name = var.role
+}
+
+locals {
+  enable_vpc_config = var.subnets != null || var.security_groups != null
 }
