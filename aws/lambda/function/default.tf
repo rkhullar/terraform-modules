@@ -22,7 +22,7 @@ resource "aws_lambda_function" "default" {
   }
 
   dynamic "vpc_config" {
-    for_each = local.enable_vpc_config
+    for_each = local.enable_vpc_config ? [true] : []
     content {
       security_group_ids = var.security_groups
       subnet_ids         = var.subnets
