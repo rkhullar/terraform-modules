@@ -35,12 +35,17 @@ resource "aws_lambda_function" "default" {
 }
 
 locals {
-  enable_vpc_config     = var.subnets != null || var.security_groups != null
-  enable_environment    = length(var.environment) > 0
-  environment_all_caps  = { for key, val in var.environment : replace(upper(key), "-", "_") => val }
-  environment           = var.ignore_case ? var.environment : local.environment_all_caps
-  template_languages    = ["python", "nodejs"]
-  template_language     = one([for language in local.template_languages : language if startswith(var.runtime, language)])
+  enable_vpc_config    = var.subnets != null || var.security_groups != null
+  enable_environment   = length(var.environment) > 0
+  environment_all_caps = { for key, val in var.environment : replace(upper(key), "-", "_") => val }
+  environment          = var.ignore_case ? var.environment : local.environment_all_caps
+}
+
+locals {
+  template_languages = ["python", "nodejs"]
+  # TODO: startswith added in terraform 1.3
+  # template_language   = one([for language in local.template_languages : language if startswith(var.runtime, language)])
+  template_language     = one(flatten([for language in local.template_languages : regexall("^${local.template_language}", var.runtime)]))
   template_source_parts = compact([path.module, "templates", local.template_language, var.template])
   template_output_parts = compact([path.module, "local", local.template_language, "${var.template}.zip"])
 }
