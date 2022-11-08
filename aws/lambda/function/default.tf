@@ -45,7 +45,7 @@ locals {
   template_languages = ["python", "nodejs"]
   # TODO: startswith added in terraform 1.3
   # template_language   = one([for language in local.template_languages : language if startswith(var.runtime, language)])
-  template_language     = one(flatten([for language in local.template_languages : regexall("^${local.template_language}", var.runtime)]))
+  template_language     = one(flatten([for language in local.template_languages : regexall("^${language}", var.runtime)]))
   template_source_parts = compact([path.module, "templates", local.template_language, var.template])
   template_output_parts = compact([path.module, "local", local.template_language, "${var.template}.zip"])
 }
