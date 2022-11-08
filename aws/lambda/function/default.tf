@@ -30,8 +30,7 @@ resource "aws_lambda_function" "default" {
   }
 
   lifecycle {
-    ignore_changes = [source_code_hash]
-    # ignore_changes = [source_code_hash, last_modified, filename, layers]
+    ignore_changes = [source_code_hash, layers]
   }
 }
 
