@@ -44,10 +44,9 @@ locals {
 locals {
   template_languages = ["python", "nodejs"]
   # TODO: startswith added in terraform 1.3
-  # template_language   = one([for language in local.template_languages : language if startswith(var.runtime, language)])
-  template_language     = one(flatten([for language in local.template_languages : regexall("^${language}", var.runtime)]))
-  template_source_parts = compact([path.module, "templates", local.template_language, var.template])
-  template_output_parts = compact([path.module, "local", local.template_language, "${var.template}.zip"])
+  # _template_language = one([for language in local.template_languages : language if startswith(var.runtime, language)])
+  _template_language = one(flatten([for language in local.template_languages : regexall("^${language}", var.runtime)]))
+  template_language  = coalesce(local._template_language, local.template_languages[0])
 }
 
 data "aws_iam_role" "default" {
@@ -56,6 +55,6 @@ data "aws_iam_role" "default" {
 
 data "archive_file" "default" {
   type        = "zip"
-  source_dir  = join("/", local.template_source_parts)
-  output_path = join("/", local.template_output_parts)
+  source_dir  = "${path.module}/templates/${local.template_language}/${var.template}"
+  output_path = "${path.module}/local/${local.template_language}/${var.template}.zip"
 }
