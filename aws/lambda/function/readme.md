@@ -2,8 +2,8 @@
 
 #### Lifecycle
 Ths module creates the lambda function resource using hello world templates for either python or nodejs. After first
-provision, changes to the function code and layer integrations are ignores. All the other configuration like environment
-variables and the handler are tracked with terraform.
+provision, changes to the function code and layer integrations are ignored All other configuration like environment
+variables and the lambda handler are tracked with terraform.
 
 #### Reserved Environment Variables
 - https://docs.aws.amazon.com/lambda/latest/dg/configuration-envvars.html#configuration-envvars-runtime
