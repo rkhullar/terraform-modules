@@ -35,7 +35,7 @@ resource "aws_lambda_function" "default" {
 }
 
 locals {
-  enable_vpc_config    = var.subnets != null || var.security_groups != null
+  enable_vpc_config    = (var.subnets != null) || (var.security_groups != null)
   enable_environment   = length(var.environment) > 0
   environment_all_caps = { for key, val in var.environment : replace(upper(key), "-", "_") => val }
   environment          = var.ignore_case ? var.environment : local.environment_all_caps
