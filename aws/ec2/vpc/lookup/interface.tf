@@ -32,3 +32,15 @@ variable "subnet_regex" {
 locals {
   subnet_regex = merge(var.subnet_regex_default, var.subnet_regex)
 }
+
+output "id" {
+  value = local.id
+}
+
+output "cidr" {
+  value = local.cidr
+}
+
+output "subnets" {
+  value = local.subnets
+}
