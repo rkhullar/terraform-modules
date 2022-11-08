@@ -15,7 +15,7 @@ resource "aws_lambda_function" "default" {
   source_code_hash               = data.archive_file.default.output_base64sha256
 
   dynamic "environment" {
-    for_each = local.enable_environment
+    for_each = local.enable_environment ? [true] : []
     content {
       variables = local.environment
     }
@@ -37,6 +37,9 @@ resource "aws_lambda_function" "default" {
 
 locals {
   enable_vpc_config     = var.subnets != null || var.security_groups != null
+  enable_environment    = length(var.environment) > 0
+  environment_all_caps  = { for key, val in var.environment : replace(upper(key), "-", "_") => val }
+  environment           = var.ignore_case ? var.environment : local.environment_all_caps
   template_languages    = ["python", "nodejs"]
   template_language     = one([for language in local.template_languages : language if startswith(var.runtime, language)])
   template_source_parts = compact([path.module, "templates", local.template_language, var.template])
