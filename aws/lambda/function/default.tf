@@ -1,7 +1,7 @@
 resource "aws_lambda_function" "default" {
   function_name                  = var.name
   tags                           = var.tags
-  role                           = data.aws_iam_role.default.arn
+  role                           = var.role
   runtime                        = var.runtime
   handler                        = var.handler
   architectures                  = [var.architecture]
@@ -47,10 +47,6 @@ locals {
   # _template_language = one([for language in local.template_languages : language if startswith(var.runtime, language)])
   _template_language = one(flatten([for language in local.template_languages : regexall("^${language}", var.runtime)]))
   template_language  = coalesce(local._template_language, local.template_languages[0])
-}
-
-data "aws_iam_role" "default" {
-  name = var.role
 }
 
 data "archive_file" "default" {
