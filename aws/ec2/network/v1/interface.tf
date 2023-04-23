@@ -9,19 +9,18 @@ variable "tags" {
 
 variable "names" {
   type = object({
-    load_balancer = optional(string, "load-balancer", "security group for load balancer")
-    linux_runtime = optional(string, "linux-runtime", "security group for linux runtime")
-    data_runtime  = optional(string, "data-runtime", "security group for data runtime")
+    load_balancer = optional(string, "load-balancer")
+    linux_runtime = optional(string, "linux-runtime")
+    data_runtime  = optional(string, "data-runtime")
   })
 }
 
 variable "descriptions" {
   type = object({
-    load_balancer = optional(string)
-    linux_runtime = optional(string)
-    data_runtime  = optional(string)
+    load_balancer = optional(string, "security group for load balancer")
+    linux_runtime = optional(string, "security group for linux runtime")
+    data_runtime  = optional(string, "security group for data runtime")
   })
-  default = {}
 }
 
 variable "rules" {

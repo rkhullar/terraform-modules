@@ -60,7 +60,6 @@ variable "egress_protocol" {
 }
 
 variable "names" {
-  default = {}
   type = object({
     load_balancer = optional(string, "load-balancer")
     linux_runtime = optional(string, "linux-runtime")
