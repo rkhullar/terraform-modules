@@ -1,20 +1,4 @@
 locals {
-  names = defaults(var.names, {
-    load_balancer = "load-balancer"
-    linux_runtime = "linux-runtime"
-    data_runtime  = "data-runtime"
-  })
-}
-
-locals {
-  descriptions = defaults(var.descriptions, {
-    load_balancer = "security group for load balancer"
-    linux_runtime = "security group for linux runtime"
-    data_runtime  = "security group for data runtime"
-  })
-}
-
-locals {
   aliases         = merge(module.security-groups-lookup.output, var.aliases)
   enable_rules    = var.enable_rules && module.security-groups-lookup.status
   security_groups = zipmap(keys(module.security-groups), values(module.security-groups)[*].id)
@@ -22,7 +6,7 @@ locals {
 
 locals {
   # preprocess rules to remove undefined or null values
-  rules_with_keys = { for key in keys(local.names) : key => lookup(var.rules, key, null) }
+  rules_with_keys = { for key in keys(var.names) : key => lookup(var.rules, key, null) }
   rules_with_type = { for key, rule in local.rules_with_keys : key => {
     for _type in ["ingress", "egress"] : _type => rule != null ? rule[_type] : null
   } }

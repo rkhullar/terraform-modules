@@ -16,13 +16,5 @@ locals {
 }
 
 locals {
-  base_names = defaults(var.names, {
-    load_balancer = "load-balancer"
-    linux_runtime = "linux-runtime"
-    data_runtime  = "data-runtime"
-  })
-}
-
-locals {
-  security_group_names = { for key, val in local.base_names : key => "${local.prefix}-${val}-${local.suffix}" }
+  security_group_names = { for key, val in var.names : key => "${local.prefix}-${val}-${local.suffix}" }
 }
