@@ -1,7 +1,3 @@
-terraform {
-  experiments = [module_variable_optional_attrs]
-}
-
 locals {
   names           = { for name in var.names : name => join("-", compact([var.prefix, name, var.suffix])) }
   descriptions    = { for name in var.names : name => lookup(var.descriptions, name, local.names[name]) }
