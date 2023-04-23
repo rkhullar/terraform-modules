@@ -1,111 +1,119 @@
 # task
-variable family {
-  type = string
+variable "family" {
+  type     = string
+  nullable = false
 }
 
-variable tags {
-  type    = map(string)
-  default = {}
+variable "tags" {
+  type     = map(string)
+  nullable = false
+  default  = {}
 }
 
-variable roles_default {
-  type    = object({ task = string, exec = string })
-  default = { task = null, exec = null }
-  # exec role required when using container secrets
-}
-
-variable roles {
-  type    = map(string)
-  default = {}
-}
-
-variable network_mode {
-  type        = string
-  default     = "awsvpc"
-  description = "none | bridge | task | host"
-}
-
-variable launch_types {
-  type        = list(string)
-  default     = []
-  description = "ec2 | fargate"
-}
-
-# container
-variable image {
-  type = string
-}
-
-variable container {
-  type    = string
-  default = null
-}
-
-variable envs {
-  type    = map(string)
-  default = {}
-}
-
-variable secrets {
-  type    = map(string)
-  default = {}
-}
-
-variable ignore_case {
-  type    = bool
-  default = false
-}
-
-variable ports {
-  type    = list(number)
-  default = [8080]
-}
-
-variable entrypoint {
-  type    = list(string)
-  default = []
-}
-
-variable command {
-  type    = list(string)
-  default = []
-}
-
-# logging
-variable logging_defaults {
-  type    = object({ group = string, prefix = string, region = string })
-  default = { group = null, prefix = null, region = null }
-  # group required
-}
-
-variable logging {
-  type    = map(string)
-  default = {}
-}
-
-variable ulimits {
-  type    = list(object({ name = string, hard-limit = number, soft-limit = number }))
-  default = []
-}
-
-variable flags_default {
+variable "roles" {
   type = object({
-    enabled     = bool
-    essential   = bool
-    docker-init = bool
-    privileged  = bool
+    task = optional(string),
+    exec = optional(string) # required when using container secrets
   })
-  default = {
-    enabled     = true
-    essential   = true
-    docker-init = false
-    privileged  = false
+}
+
+variable "network_mode" {
+  type     = string
+  nullable = false
+  default  = "awsvpc"
+  validation {
+    condition     = contains(["none", "bridge", "task", "host"], var.network_mode)
+    error_message = "Allowed Values: {none | bridge | task | host}."
   }
 }
 
-variable flags {
-  type    = map(bool)
-  default = {}
+variable "launch_types" {
+  type        = list(string)
+  nullable    = false
+  default     = []
+  description = "ec2 | fargate"
+  validation {
+    condition     = length([for value in var.launch_types : value if !contains(["ec2", "fargate"], value)]) == 0
+    error_message = "Allowed Values: {ec2 | fargate}."
+  }
+}
+
+# container
+variable "image" {
+  type     = string
+  nullable = false
+}
+
+variable "container" {
+  type     = string
+  nullable = true
+  default  = null
+}
+
+variable "envs" {
+  type     = map(string)
+  nullable = false
+  default  = {}
+}
+
+variable "secrets" {
+  type     = map(string)
+  nullable = false
+  default  = {}
+}
+
+variable "ignore_case" {
+  type     = bool
+  nullable = false
+  default  = false
+}
+
+variable "ports" {
+  type     = list(number)
+  nullable = false
+  default  = [8080]
+}
+
+variable "entrypoint" {
+  type     = list(string)
+  nullable = true
+  default  = []
+}
+
+variable "command" {
+  type     = list(string)
+  nullable = true
+  default  = []
+}
+
+# logging
+variable "logging_defaults" {
+  nullable = false
+  type = object({
+    group  = string
+    prefix = optional(string),
+    region = optional(string)
+  })
+}
+
+variable "ulimits" {
+  default  = []
+  nullable = false
+  type = list(object({
+    name       = string
+    hard-limit = number
+    soft-limit = number
+  }))
+}
+
+variable "flags" {
+  nullable = false
+  type = object({
+    enabled     = optional(bool, true)
+    essential   = optional(bool, true)
+    docker-init = optional(bool, false)
+    privileged  = optional(bool, false)
+  })
 }
 
 /*
@@ -116,10 +124,39 @@ variable flags {
  *  docker     -> scope=string[task|shared], autoprovision=bool, driver=string[local], driver_opts=map(string), labels=map(string)
  *  efs        -> id=string, root_directory=string, encrypt=bool, transit_port=number, access_point_id=string, enable_iam=bool
  */
+/*
 variable volumes {
   type    = any
   default = []
 }
+*/
+
+variable "volumes" {
+  type = list(object({
+    name = string
+    type = string # bind_mount | "docker" | "efs"
+    bind_mount = optional(object({
+      host_path = string
+    }))
+    docker = optional(object({
+      scope         = string # task | shared
+      autoprovision = bool
+      driver        = string # local
+      driver_opts   = map(string)
+      labels        = map(string)
+    }))
+    efs = optional(object({
+      id              = string
+      root_directory  = string
+      encrypt         = bool
+      transit_port    = number
+      access_point_id = string
+      enable_iam      = bool
+    }))
+  }))
+}
+
+
 
 /*
  * list(object)
@@ -127,13 +164,13 @@ variable volumes {
  * container_path = string
  * read_only      = bool
  */
-variable mount_points {
+variable "mount_points" {
   type    = any
   default = []
 }
 
 # sizing
-variable sizing_defaults {
+variable "sizing_defaults" {
   type = object({
     task      = object({ cpu = number, memory = number })
     container = object({ cpu = number, memory = number, memory-reservation = number })
@@ -144,7 +181,7 @@ variable sizing_defaults {
   }
 }
 
-variable sizing {
+variable "sizing" {
   type    = map(map(number))
   default = {}
 }
