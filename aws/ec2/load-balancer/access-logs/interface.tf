@@ -1,25 +1,30 @@
 variable "name" {
-  type = string
+  type     = string
+  nullable = false
 }
 
 variable "shared" {
-  type    = bool
-  default = true
+  type     = bool
+  nullable = false
+  default  = true
 }
 
 variable "expiration" {
-  type    = number
-  default = 14
+  type     = number
+  nullable = false
+  default  = 14
 }
 
 variable "prefix" {
-  type    = string
-  default = null
+  type     = string
+  nullable = true
+  default  = null
 }
 
 variable "tags" {
-  type    = map(string)
-  default = {}
+  type     = map(string)
+  nullable = false
+  default  = {}
 }
 
 output "output" {

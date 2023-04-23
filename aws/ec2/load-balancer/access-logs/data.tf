@@ -6,7 +6,7 @@ locals {
   path_uri   = join("/", compact(local.path_parts))
 }
 
-data "aws_iam_policy_document" "logs" {
+data "aws_iam_policy_document" "default" {
   statement {
     principals {
       type        = "AWS"
