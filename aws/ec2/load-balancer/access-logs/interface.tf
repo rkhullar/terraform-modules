@@ -1,23 +1,27 @@
-variable name {
+variable "name" {
   type = string
 }
 
-variable shared {
+variable "shared" {
   type    = bool
   default = true
 }
 
-variable expiration {
+variable "expiration" {
   type    = number
   default = 14
 }
 
-variable prefix {
+variable "prefix" {
   type    = string
   default = null
 }
 
-variable tags {
+variable "tags" {
   type    = map(string)
   default = {}
+}
+
+output "output" {
+  value = aws_s3_bucket.default
 }

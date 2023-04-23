@@ -1,4 +1,4 @@
-resource aws_s3_bucket default {
+resource "aws_s3_bucket" "default" {
   bucket        = var.name
   policy        = data.aws_iam_policy_document.logs.json
   tags          = var.tags
@@ -14,7 +14,7 @@ resource aws_s3_bucket default {
   }
 }
 
-resource aws_s3_bucket_public_access_block logs {
+resource "aws_s3_bucket_public_access_block" "logs" {
   bucket                  = aws_s3_bucket.default.id
   block_public_acls       = true
   block_public_policy     = true

@@ -3,7 +3,7 @@
  * https://registry.terraform.io/modules/terraform-aws-modules/alb/aws/5.0.0
  */
 
-resource aws_lb default {
+resource "aws_lb" "default" {
   name               = var.name
   internal           = var.internal
   load_balancer_type = var.type
@@ -12,7 +12,7 @@ resource aws_lb default {
   idle_timeout       = var.idle_timeout
   tags               = var.tags
 
-  dynamic access_logs {
+  dynamic "access_logs" {
     for_each = var.access_logs == null ? [] : [var.access_logs]
     content {
       enabled = access_logs.value["enabled"]

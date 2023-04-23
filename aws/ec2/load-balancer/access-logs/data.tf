@@ -1,4 +1,4 @@
-data aws_elb_service_account default {}
+data "aws_elb_service_account" "default" {}
 
 locals {
   share_part = var.shared ? "*" : null
@@ -6,7 +6,7 @@ locals {
   path_uri   = join("/", compact(local.path_parts))
 }
 
-data aws_iam_policy_document logs {
+data "aws_iam_policy_document" "logs" {
   statement {
     principals {
       type        = "AWS"

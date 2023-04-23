@@ -4,14 +4,14 @@ locals {
   listener_domains = toset([for name in local.secure_listeners : local.listener_map[name]["domain"]])
 }
 
-data aws_acm_certificate default {
+data "aws_acm_certificate" "default" {
   for_each    = local.listener_domains
   domain      = each.value
   types       = ["AMAZON_ISSUED"]
   most_recent = true
 }
 
-resource aws_lb_listener default {
+resource "aws_lb_listener" "default" {
   depends_on        = [aws_lb.default, aws_lb_target_group.default]
   for_each          = local.listener_map
   load_balancer_arn = aws_lb.default.arn
@@ -24,7 +24,7 @@ resource aws_lb_listener default {
     type             = each.value["action"]
     target_group_arn = each.value["action"] == "forward" ? aws_lb_target_group.default[each.value["target_group"]].arn : null
 
-    dynamic redirect {
+    dynamic "redirect" {
       for_each = each.value["action"] == "redirect" ? [each.value["redirect"]] : []
       content {
         path        = lookup(redirect.value, "path", null)
@@ -36,7 +36,7 @@ resource aws_lb_listener default {
       }
     }
 
-    dynamic fixed_response {
+    dynamic "fixed_response" {
       for_each = each.value["action"] == "fixed-response" ? [each.value["fixed_response"]] : []
       content {
         content_type = fixed_response.value["content_type"]

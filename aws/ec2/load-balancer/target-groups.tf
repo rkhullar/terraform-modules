@@ -1,4 +1,4 @@
-resource aws_lb_target_group default {
+resource "aws_lb_target_group" "default" {
   for_each    = { for item in var.target_groups : item["key"] => item }
   name        = lookup(each.value, "name", null)
   name_prefix = lookup(each.value, "name_prefix", null)
@@ -8,7 +8,7 @@ resource aws_lb_target_group default {
   vpc_id      = var.vpc_id
   tags        = var.tags
 
-  dynamic health_check {
+  dynamic "health_check" {
     for_each = contains(keys(each.value), "health_check") ? [each.value["health_check"]] : []
     content {
       enabled             = lookup(health_check.value, "enabled", null)
