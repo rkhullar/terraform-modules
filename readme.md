@@ -1,7 +1,9 @@
-## TODO
-- Adopt [defaults function][defaults-function] for complex object type variables once [optional attributes][optional-attributes-experiment] feature is enabled by default.
+## Version Compatibility
+- terraform 1.2 -> modules 0.2
+- terraform 1.3 -> modules 0.3
 
-## Watch
+## Additional Notes
+- [Optional object type attributes][optional-object-type] were experimental in terraform 1.2; generally available as of 1.3.
 - [terragrunt-null-issue]
 
 ## Notes
