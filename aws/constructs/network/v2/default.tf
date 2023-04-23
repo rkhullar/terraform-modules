@@ -1,7 +1,3 @@
-terraform {
-  experiments = [module_variable_optional_attrs]
-}
-
 module "default" {
   source       = "../../../ec2/network/v2"
   vpc_id       = local.vpc.id
