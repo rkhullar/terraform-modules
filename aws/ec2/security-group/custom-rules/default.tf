@@ -1,7 +1,3 @@
-terraform {
-  experiments = [module_variable_optional_attrs]
-}
-
 resource "aws_security_group_rule" "default" {
   for_each                 = var.enable ? local.detail_map : {}
   security_group_id        = each.value.group_id

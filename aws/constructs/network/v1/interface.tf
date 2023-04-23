@@ -45,8 +45,8 @@ variable "aliases" {
 }
 
 variable "enable_rules" {
-  type        = bool
-  default     = true
+  type    = bool
+  default = true
 }
 
 variable "ingress_protocol" {
