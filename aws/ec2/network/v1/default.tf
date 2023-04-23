@@ -1,8 +1,8 @@
 module "security-groups" {
   for_each    = local.rules
   source      = "../../security-group"
-  name        = local.names[each.key]
-  description = local.descriptions[each.key]
+  name        = var.names[each.key]
+  description = var.descriptions[each.key]
   tags        = var.tags
   vpc_id      = var.vpc_id
   aliases     = local.aliases
@@ -26,7 +26,7 @@ module "security-groups" {
 
 module "security-groups-lookup" {
   source = "../../security-group/lookup"
-  names  = local.names
+  names  = var.names
   vpc_id = var.vpc_id
 }
 
