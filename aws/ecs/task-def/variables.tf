@@ -71,7 +71,7 @@ variable "ignore_case" {
 variable "ports" {
   type     = list(number)
   nullable = false
-  default  = [8080]
+  default  = [8000]
 }
 
 variable "entrypoint" {
@@ -87,7 +87,7 @@ variable "command" {
 }
 
 # logging
-variable "logging_defaults" {
+variable "logging" {
   nullable = false
   type = object({
     group  = string
@@ -116,72 +116,58 @@ variable "flags" {
   })
 }
 
-/*
- * list(object)
- * name = string
- * type = string
- *  bind_mount -> host_path=string
- *  docker     -> scope=string[task|shared], autoprovision=bool, driver=string[local], driver_opts=map(string), labels=map(string)
- *  efs        -> id=string, root_directory=string, encrypt=bool, transit_port=number, access_point_id=string, enable_iam=bool
- */
-/*
-variable volumes {
-  type    = any
-  default = []
-}
-*/
-
 variable "volumes" {
+  default  = []
+  nullable = false
   type = list(object({
     name = string
-    type = string # bind_mount | "docker" | "efs"
+    type = string
     bind_mount = optional(object({
       host_path = string
     }))
     docker = optional(object({
       scope         = string # task | shared
-      autoprovision = bool
-      driver        = string # local
-      driver_opts   = map(string)
-      labels        = map(string)
+      autoprovision = optional(bool)
+      driver        = optional(string, "local")
+      driver_opts   = optional(map(string))
+      labels        = optional(map(string))
     }))
     efs = optional(object({
       id              = string
       root_directory  = string
-      encrypt         = bool
+      encrypt         = optional(bool, false)
       transit_port    = number
-      access_point_id = string
-      enable_iam      = bool
+      access_point_id = optional(string)
+      enable_iam      = optional(bool, false)
     }))
   }))
-}
-
-
-
-/*
- * list(object)
- * volume         = string
- * container_path = string
- * read_only      = bool
- */
-variable "mount_points" {
-  type    = any
-  default = []
-}
-
-# sizing
-variable "sizing_defaults" {
-  type = object({
-    task      = object({ cpu = number, memory = number })
-    container = object({ cpu = number, memory = number, memory-reservation = number })
-  })
-  default = {
-    task      = { cpu = null, memory = null }
-    container = { cpu = null, memory = null, memory-reservation = null }
+  validation {
+    condition     = length([for item in var.volumes : item if !contains(["bind_mount", "docker", "efs"], item["type"])]) == 0
+    error_message = "Allowed Values: type -> {bind_mount | docker | efs}."
   }
 }
 
+variable "mount_points" {
+  default  = []
+  nullable = false
+  type = list(object({
+    volume         = string
+    container_path = string
+    read_only      = bool
+  }))
+}
+
+# sizing
 variable "sizing" {
-  type    = map(map(number))
-  default = {}
+  type = object({
+    task = object({
+      cpu    = optional(number)
+      memory = optional(number)
+    })
+    container = object({
+      cpu                = optional(number)
+      memory             = optional(number)
+      memory-reservation = number
+    })
+  })
 }

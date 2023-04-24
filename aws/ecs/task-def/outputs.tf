@@ -1,5 +1,5 @@
 output "default" {
-  value = local.flags["enabled"] ? aws_ecs_task_definition.default[0] : null
+  value = one(aws_ecs_task_definition.default)
 }
 
 output "container" {
