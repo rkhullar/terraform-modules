@@ -42,13 +42,13 @@ variable "security_groups" {
 
 # logs
 variable "access_logs" {
+  default  = null
+  nullable = true
   type = object({
     enabled = optional(bool, true)
     bucket  = string
     prefix  = optional(string)
   })
-  nullable = true
-  default  = null
 }
 
 variable "target_groups" {
@@ -59,6 +59,28 @@ variable "target_groups" {
 variable "listeners" {
   type    = any
   default = []
+}
+
+// TODO: update types for listeners and target_groups
+variable "listeners-v2" {
+  default  = []
+  nullable = false
+  type = list(object({
+    port     = number
+    protocol = string # tcp | http | https
+    cert     = optional(string)
+    action   = string # fixed-response | redirect
+    fixed-response = optional(object({
+      content_type = string
+      message_body = string
+      status_code  = number
+    }))
+    redirect = optional(object({
+      protocol    = string
+      port        = number
+      status_code = string
+    }))
+  }))
 }
 
 # misc
