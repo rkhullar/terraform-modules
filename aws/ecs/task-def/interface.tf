@@ -22,8 +22,8 @@ variable "network_mode" {
   nullable = false
   default  = "awsvpc"
   validation {
-    condition     = contains(["none", "bridge", "task", "host"], var.network_mode)
-    error_message = "Allowed Values: {none | bridge | task | host}."
+    condition     = contains(["awsvpc", "none", "bridge", "task", "host"], var.network_mode)
+    error_message = "Allowed Values: {awsvpc | none | bridge | task | host}."
   }
 }
 
