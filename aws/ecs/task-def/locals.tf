@@ -7,14 +7,14 @@ locals {
 }
 
 module "envs-list" {
-  source      = "../../random/upper-map"
+  source      = "../../util/upper-map"
   input       = var.envs
   ignore_case = var.ignore_case
   value_type  = "value"
 }
 
 module "secrets-list" {
-  source      = "../../random/upper-map"
+  source      = "../../util/upper-map"
   input       = var.secrets
   ignore_case = var.ignore_case
   value_type  = "valueFrom"
