@@ -125,17 +125,17 @@ variable "volumes" {
       host_path = string
     }))
     docker = optional(object({
-      scope         = string # task | shared
+      scope         = optional(string) # task | shared
       autoprovision = optional(bool)
-      driver        = optional(string, "local")
+      driver        = optional(string)
       driver_opts   = optional(map(string))
       labels        = optional(map(string))
     }))
     efs = optional(object({
       id              = string
-      root_directory  = string
+      root_directory  = optional(string)
       encrypt         = optional(bool, false)
-      transit_port    = number
+      transit_port    = optional(number)
       access_point_id = optional(string)
       enable_iam      = optional(bool, false)
     }))
