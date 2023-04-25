@@ -22,16 +22,15 @@ variable "network_mode" {
   nullable = false
   default  = "awsvpc"
   validation {
-    condition     = contains(["awsvpc", "none", "bridge", "task", "host"], var.network_mode)
-    error_message = "Allowed Values: {awsvpc | none | bridge | task | host}."
+    condition     = contains(["none", "bridge", "awsvpc", "host"], var.network_mode)
+    error_message = "Allowed Values: {none | bridge | awsvpc | host}."
   }
 }
 
 variable "launch_types" {
-  type        = list(string)
-  nullable    = false
-  default     = []
-  description = "ec2 | fargate"
+  type     = list(string)
+  nullable = false
+  default  = []
   validation {
     condition     = length([for value in var.launch_types : value if !contains(["ec2", "fargate"], value)]) == 0
     error_message = "Allowed Values: {ec2 | fargate}."
@@ -91,7 +90,7 @@ variable "logging" {
   nullable = false
   type = object({
     group  = string
-    prefix = optional(string),
+    prefix = optional(string, "default"),
     region = optional(string)
   })
 }
@@ -167,7 +166,7 @@ variable "sizing" {
     container = object({
       cpu                = optional(number)
       memory             = optional(number)
-      memory-reservation = number
+      memory-reservation = optional(number)
     })
   })
 }

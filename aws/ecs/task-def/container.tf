@@ -1,9 +1,8 @@
 data "aws_region" "default" {}
 
 locals {
-  logging_defaults = { region = data.aws_region.default.name, prefix = local.container_name }
-  logging          = merge(local.logging_defaults, var.logging)
-  container_name   = coalesce(var.container, var.family)
+  container_name = coalesce(var.container, var.family)
+  logging        = merge(var.logging, { region = coalesce(var.logging.region, data.aws_region.default.name) })
 }
 
 module "envs-list" {
