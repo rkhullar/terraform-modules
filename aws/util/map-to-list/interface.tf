@@ -19,10 +19,12 @@ locals {
   keys_upper = [for key in keys(var.input) : replace(upper(key), "-", "_")]
   keys       = var.ignore_case ? keys(var.input) : local.keys_upper
   values     = values(var.input)
-  output = [for i in range(length(var.input)) : {
-    name           = local.keys[i],
-    var.value_type = local.values[i]
-  }]
+  output = [
+    for i in range(length(var.input)) : {
+      name           = local.keys[i],
+      var.value_type = local.values[i]
+    }
+  ]
 }
 
 output "output" {

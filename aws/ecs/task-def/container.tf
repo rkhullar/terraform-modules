@@ -1,20 +1,20 @@
 data "aws_region" "default" {}
 
 locals {
-  logging_defaults = { region = data.aws_region.default.name, prefix = local.container }
+  logging_defaults = { region = data.aws_region.default.name, prefix = local.container_name }
   logging          = merge(local.logging_defaults, var.logging)
-  container        = coalesce(var.container, var.family) # container name
+  container_name   = coalesce(var.container, var.family)
 }
 
 module "envs-list" {
-  source      = "../../util/upper-map"
+  source      = "../../util/map-to-list"
   input       = var.envs
   ignore_case = var.ignore_case
   value_type  = "value"
 }
 
 module "secrets-list" {
-  source      = "../../util/upper-map"
+  source      = "../../util/map-to-list"
   input       = var.secrets
   ignore_case = var.ignore_case
   value_type  = "valueFrom"
@@ -54,7 +54,7 @@ locals {
 
 locals {
   container_definition = {
-    name              = local.container
+    name              = local.container_name
     image             = var.image
     essential         = var.flags.essential
     logConfiguration  = local.log_config
