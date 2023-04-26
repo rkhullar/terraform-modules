@@ -57,42 +57,53 @@ variable "target_groups" {
 }
 
 variable "listeners" {
-  type    = any
-  default = []
-}
-
-// TODO: update types for listeners and target_groups
-variable "listeners-v2" {
   default  = []
   nullable = false
   type = list(object({
-    port     = number
-    protocol = string # tcp | http | https
-    cert     = optional(string)
-    action   = string # fixed-response | redirect
-    fixed-response = optional(object({
-      content_type = string
-      message_body = string
-      status_code  = number
+    port       = number
+    protocol   = string
+    cert       = optional(string)
+    ssl_policy = optional(string)
+    action     = string
+    forward = optional(object({
+      target_group = string
     }))
     redirect = optional(object({
-      protocol    = string
-      port        = number
+      path        = optional(string)
+      host        = optional(string)
+      protocol    = optional(string)
+      port        = optional(number)
       status_code = string
     }))
+    fixed-response = optional(object({
+      content_type = string
+      message_body = optional(string)
+      status_code  = optional(number)
+    }))
   }))
+  validation {
+    condition     = length([for item in var.listeners : item if !contains(["tcp", "http", "https"], item["protocol"])]) == 0
+    error_message = "Allowed Values: protocol -> {tcp | http | https}."
+  }
+  validation {
+    condition     = length([for item in var.listeners : item if !contains(["forward", "redirect", "fixed-response", "authenticate-cognito", "authenticate-oidc"], item["action"])]) == 0
+    error_message = "Allowed Values: action -> {forward | redirect | fixed-response | authenticate-cognito | authenticate-oidc}."
+  }
 }
 
 # misc
 variable "idle_timeout" {
-  type    = number
-  default = 60
+  type     = number
+  nullable = true
+  default  = 60
 }
 
-variable "default_ssl_policy" {
-  type    = string
-  default = "ELBSecurityPolicy-2016-08"
+variable "ssl_policy" {
+  type     = string
+  nullable = false
+  default  = "ELBSecurityPolicy-2016-08"
 }
+
 output "output" {
   value = aws_lb.default
 }
