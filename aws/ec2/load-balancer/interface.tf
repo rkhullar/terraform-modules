@@ -73,9 +73,10 @@ variable "listeners" {
       host        = optional(string)
       protocol    = optional(string)
       port        = optional(number)
+      query       = optional(string)
       status_code = string
     }))
-    fixed-response = optional(object({
+    fixed_response = optional(object({
       content_type = string
       message_body = optional(string)
       status_code  = optional(number)
