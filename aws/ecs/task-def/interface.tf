@@ -37,6 +37,15 @@ variable "launch_types" {
   }
 }
 
+variable "architecture" {
+  type     = string
+  nullable = true
+  validation {
+    condition     = contains(["x86_64", "arm64"], var.architecture)
+    error_message = "Allowed Values: {x86_64 | arm64}."
+  }
+}
+
 # container
 variable "image" {
   type     = string

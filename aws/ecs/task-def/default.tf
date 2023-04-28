@@ -10,6 +10,13 @@ resource "aws_ecs_task_definition" "default" {
   requires_compatibilities = [for item in var.launch_types : upper(item)]
   tags                     = var.tags
 
+  dynamic "runtime_platform" {
+    for_each = var.architecture != null ? [true] : []
+    content {
+      operating_system_family = upper(var.architecture)
+    }
+  }
+
   dynamic "volume" {
     for_each = var.volumes
     content {
