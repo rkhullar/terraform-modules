@@ -23,6 +23,15 @@ variable "launch_type" {
   }
 }
 
+variable "architecture" {
+  type     = string
+  nullable = true
+  validation {
+    condition     = contains(["x86_64", "arm64"], var.architecture)
+    error_message = "Allowed Values: {x86_64 | arm64}."
+  }
+}
+
 variable "capacity_providers" {
   default  = []
   nullable = false

@@ -4,6 +4,7 @@ module "default-task-def" {
   tags         = var.tags
   roles        = lookup(var.task_config, "roles", {})
   launch_types = [var.launch_type]
+  architecture = var.architecture
   image        = "python:${var.python_version}-alpine"
   container    = var.name
   envs         = local.default_envs
@@ -12,7 +13,6 @@ module "default-task-def" {
   command      = [local.default_command]
   logging      = { group = aws_cloudwatch_log_group.default.name, prefix = "default" }
   sizing       = { task = { cpu = 512, memory = 1024 } }
-  architecture = ""
 }
 
 module "target-task-def" {
@@ -21,6 +21,7 @@ module "target-task-def" {
   tags         = var.tags
   roles        = lookup(var.task_config, "roles", {})
   launch_types = [var.launch_type]
+  architecture = var.architecture
   image        = local.image
   container    = var.name
   envs         = lookup(var.task_config, "envs", {})
@@ -35,5 +36,4 @@ module "target-task-def" {
   volumes      = lookup(var.task_config, "volumes", [])
   mount_points = lookup(var.task_config, "mount_points", [])
   sizing       = lookup(var.task_config, "sizing", {})
-  architecture = ""
 }
