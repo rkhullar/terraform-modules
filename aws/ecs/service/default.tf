@@ -21,7 +21,7 @@ resource "aws_ecs_service" "default" {
   dynamic "capacity_provider_strategy" {
     for_each = var.capacity_providers
     content {
-      capacity_provider = capacity_provider_strategy.value["name"]
+      capacity_provider = replace(upper(capacity_provider_strategy.value["name"]), "-", "_")
       weight            = capacity_provider_strategy.value["weight"]
       base              = capacity_provider_strategy.value["base"]
     }
