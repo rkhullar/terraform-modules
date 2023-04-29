@@ -55,6 +55,7 @@ variable "target_groups" {
   default  = []
   nullable = false
   type = list(object({
+    key         = string
     name        = optional(string)
     name_prefix = optional(string)
     target_type = optional(string)
