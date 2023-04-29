@@ -9,7 +9,7 @@ module "default-task-def" {
   container    = var.name
   envs         = local.default_envs
   ports        = local.ports
-  entrypoint   = ["python", "-c"]
+  entrypoint   = ["sh", "-c"]
   command      = [local.default_command]
   logging      = { group = aws_cloudwatch_log_group.default.name, prefix = "default" }
   sizing       = { task = { cpu = 256, memory = 512 } }
