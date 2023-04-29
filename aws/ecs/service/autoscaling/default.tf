@@ -1,22 +1,14 @@
-locals {
-  enable   = merge(var.enable_defaults, var.enable)
-  capacity = merge(var.capacity_defaults, var.capacity)
-  cooldown = merge(var.cooldown_defaults, var.cooldown)
-  target   = coalesce(var.target, var.target_default)
-  metric   = coalesce(var.metric, var.metric_default)
-}
-
-resource aws_appautoscaling_target default {
-  count              = local.enable["out"] ? 1 : 0
-  min_capacity       = local.capacity["min"]
-  max_capacity       = local.capacity["max"]
+resource "aws_appautoscaling_target" "default" {
+  count              = var.enable.out ? 1 : 0
+  min_capacity       = var.capacity.min
+  max_capacity       = var.capacity.max
   scalable_dimension = "ecs:service:DesiredCount"
   service_namespace  = "ecs"
   resource_id        = "service/${var.cluster}/${var.service}"
 }
 
-resource aws_appautoscaling_policy default {
-  count              = local.enable["out"] ? 1 : 0
+resource "aws_appautoscaling_policy" "default" {
+  count              = var.enable.out ? 1 : 0
   name               = aws_appautoscaling_target.default[0].resource_id
   resource_id        = aws_appautoscaling_target.default[0].resource_id
   scalable_dimension = aws_appautoscaling_target.default[0].scalable_dimension
@@ -24,12 +16,12 @@ resource aws_appautoscaling_policy default {
   policy_type        = "TargetTrackingScaling"
 
   target_tracking_scaling_policy_configuration {
-    target_value       = local.target
-    disable_scale_in   = ! local.enable["in"]
-    scale_in_cooldown  = local.cooldown["in"]
-    scale_out_cooldown = local.cooldown["out"]
+    target_value       = var.target
+    disable_scale_in   = !var.enable.in
+    scale_in_cooldown  = var.cooldown.in
+    scale_out_cooldown = var.cooldown.out
     predefined_metric_specification {
-      predefined_metric_type = local.metric
+      predefined_metric_type = var.metric
       resource_label         = var.resource_label
     }
   }

@@ -1,64 +1,57 @@
-variable cluster {
-  type = string
+variable "cluster" {
+  type     = string
+  nullable = false
 }
 
-variable service {
-  type = string
+variable "service" {
+  type     = string
+  nullable = false
 }
 
-variable enable {
-  type    = map(bool)
-  default = {}
+variable "enable" {
+  default  = {}
+  nullable = false
+  type = object({
+    in  = optional(bool, true)
+    out = optional(bool, true)
+  })
 }
 
-variable capacity {
-  type    = map(number)
-  default = {}
+variable "capacity" {
+  default  = {}
+  nullable = false
+  type = object({
+    min = optional(number, 1)
+    max = optional(number, 8)
+  })
 }
 
-variable cooldown {
-  type    = map(number)
-  default = {}
+variable "cooldown" {
+  default  = {}
+  nullable = false
+  type = object({
+    in  = optional(number, 60)
+    out = optional(number, 60)
+  })
 }
 
-variable target {
-  type    = number
-  default = null
+variable "target" {
+  type     = number
+  nullable = false
+  default  = 75
 }
 
-variable metric {
-  type    = string
-  default = null
+variable "metric" {
+  type     = string
+  nullable = false
+  validation {
+    condition     = contains(["ECSServiceAverageCPUUtilization", "ECSServiceAverageMemoryUtilization", "ALBRequestCountPerTarget"], var.metric)
+    error_message = "Allowed Values: {ECSServiceAverageCPUUtilization | ECSServiceAverageMemoryUtilization | ALBRequestCountPerTarget}."
+  }
 }
 
-variable resource_label {
-  type    = string
-  default = null
-}
-
-# defaults
-variable enable_defaults {
-  type    = object({ in = bool, out = bool })
-  default = { in = true, out = true }
-}
-
-variable capacity_defaults {
-  type    = object({ min = number, max = number })
-  default = { min = 1, max = 8 }
-}
-
-variable cooldown_defaults {
-  type    = object({ in = number, out = number })
-  default = { in = 60, out = 60 }
-}
-
-variable target_default {
-  type    = number
-  default = 75
-}
-
-variable metric_default {
-  type        = string
-  default     = "ECSServiceAverageCPUUtilization"
-  description = "ECSServiceAverageCPUUtilization | ECSServiceAverageMemoryUtilization | ALBRequestCountPerTarget"
+variable "resource_label" {
+  type     = string
+  nullable = true
+  default  = null
 }

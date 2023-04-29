@@ -41,7 +41,6 @@ resource "aws_ecs_service" "default" {
   }
 }
 
-/*
 module "autoscaling" {
   source         = "./autoscaling"
   cluster        = data.aws_ecs_cluster.default.cluster_name
@@ -53,4 +52,3 @@ module "autoscaling" {
   metric         = lookup(var.autoscaling, "metric", null)
   resource_label = lookup(var.autoscaling, "resource_label", null)
 }
-*/
