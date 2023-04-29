@@ -1,4 +1,4 @@
-resource aws_ecs_service default {
+resource "aws_ecs_service" "default" {
   depends_on              = [module.default-task-def, module.target-task-def]
   name                    = var.name
   tags                    = var.tags
@@ -17,16 +17,16 @@ resource aws_ecs_service default {
     security_groups = var.security_groups
   }
 
-  dynamic capacity_provider_strategy {
-    for_each = local.capacity_providers
+  dynamic "capacity_provider_strategy" {
+    for_each = var.capacity_providers
     content {
       capacity_provider = capacity_provider_strategy.value["name"]
       weight            = capacity_provider_strategy.value["weight"]
-      base              = lookup(capacity_provider_strategy.value, "base", 0)
+      base              = capacity_provider_strategy.value["base"]
     }
   }
 
-  dynamic load_balancer {
+  dynamic "load_balancer" {
     for_each = local.load_balancers
     content {
       target_group_arn = load_balancer.value["target_group_arn"]
@@ -40,7 +40,7 @@ resource aws_ecs_service default {
   }
 }
 
-module autoscaling {
+module "autoscaling" {
   source         = "./autoscaling"
   cluster        = data.aws_ecs_cluster.default.cluster_name
   service        = var.name

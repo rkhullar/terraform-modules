@@ -1,4 +1,4 @@
-module default-task-def {
+module "default-task-def" {
   source       = "../task-def"
   family       = "${var.name}-default"
   tags         = var.tags
@@ -14,7 +14,7 @@ module default-task-def {
   sizing       = { task = { cpu = 512, memory = 1024 } }
 }
 
-module target-task-def {
+module "target-task-def" {
   source       = "../task-def"
   family       = var.name
   tags         = var.tags
