@@ -115,6 +115,7 @@ variable "ulimits" {
 }
 
 variable "flags" {
+  default  = {}
   nullable = false
   type = object({
     enabled     = optional(bool, true)
