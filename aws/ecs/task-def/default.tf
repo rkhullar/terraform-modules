@@ -13,7 +13,8 @@ resource "aws_ecs_task_definition" "default" {
   dynamic "runtime_platform" {
     for_each = var.architecture != null ? [true] : []
     content {
-      operating_system_family = upper(var.architecture)
+      operating_system_family = upper("linux")
+      cpu_architecture        = upper(var.architecture)
     }
   }
 
