@@ -52,8 +52,26 @@ variable "access_logs" {
 }
 
 variable "target_groups" {
-  type    = any
-  default = []
+  default  = []
+  nullable = false
+  type = list(object({
+    name        = optional(string)
+    name_prefix = optional(string)
+    target_type = optional(string)
+    port        = optional(number)
+    protocol    = optional(string)
+    health_check = optional(object({
+      enabled             = optional(bool)
+      interval            = optional(number)
+      path                = optional(string)
+      port                = optional(number)
+      healthy_threshold   = optional(number)
+      unhealthy_threshold = optional(number)
+      timeout             = optional(number)
+      protocol            = optional(string)
+      matcher             = optional(string)
+    }))
+  }))
 }
 
 variable "listeners" {
