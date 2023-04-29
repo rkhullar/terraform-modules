@@ -9,7 +9,7 @@ resource "aws_ecs_service" "default" {
   enable_execute_command  = var.flags.enable_execute_command
   force_new_deployment    = var.flags.force_new_deployment
   desired_count           = var.capacity.desired
-  task_definition         = var.flags.skip_default ? module.target-task-def.default["arn"] : module.default-task-def["arn"]
+  task_definition         = var.flags.skip_default ? module.target-task-def.default["arn"] : module.default-task-def.default["arn"]
   iam_role                = var.iam_role
   platform_version        = var.launch_type == "fargate" ? upper(var.platform_version) : null
 
@@ -31,8 +31,8 @@ resource "aws_ecs_service" "default" {
     for_each = local.load_balancers
     content {
       target_group_arn = load_balancer.value["target_group_arn"]
-      container_name   = coalesce(load_balancer.value["container_name"], var.name)
-      container_port   = coalesce(load_balancer.value["container_port"], local.target_port)
+      container_name   = coalesce(load_balancer.value["container_name"])
+      container_port   = coalesce(load_balancer.value["container_port"])
     }
   }
 

@@ -36,6 +36,6 @@ locals {
 }
 
 locals {
-  load_balancer_1 = var.target_group != null ? [{ target_group_arn = var.target_group }] : []
-  load_balancers  = concat(local.load_balancer_1, var.load_balancer)
+  default_load_balancer = { target_group_arn = var.target_group, container_name = var.name, container_port = local.target_port }
+  load_balancers        = concat(var.target_group != null ? [local.default_load_balancer] : [], var.load_balancer)
 }
