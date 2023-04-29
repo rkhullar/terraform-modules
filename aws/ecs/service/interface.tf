@@ -40,11 +40,6 @@ variable "iam_role" {
   description = "required if using load balancer without awsvpc network mode"
 }
 
-variable "force_new_deployment" {
-  type    = bool
-  default = true
-}
-
 # network
 variable "subnets" {
   type     = list(string)
@@ -62,27 +57,20 @@ variable "target_group" {
   default  = null
 }
 
-variable "skip_default" {
-  type     = bool
-  nullable = false
-  default  = false
-}
-
 variable "platform_version" {
   type     = string
   nullable = false
   default  = "latest"
 }
 
-/*
- * list(object)
- * target_group_arn = string
- * container_name   = number
- * container_port   = number
- */
 variable "load_balancer" {
-  type    = any
-  default = []
+  default  = []
+  nullable = false
+  type = list(object({
+    target_group_arn = string
+    container_name   = optional(number)
+    container_port   = optional(number)
+  }))
 }
 
 # default task
@@ -103,35 +91,39 @@ variable "propagate_tags" {
   }
 }
 
-variable "enable_ecs_managed_tags" {
-  type     = bool
+# flags
+variable "flags" {
+  default  = {}
   nullable = false
-  default  = true
-}
-
-variable "enable_execute_command" {
-  type     = bool
-  nullable = false
-  default  = false
-}
-
-# task
-variable "task_config" {
-  type     = any
-  nullable = false
+  type = object({
+    force_new_deployment    = optional(bool, true)
+    enable_ecs_managed_tags = optional(bool, true)
+    enable_execute_command  = optional(bool, false)
+    skip_default            = optional(bool, false)
+  })
 }
 
 # autoscaling
 variable "capacity" {
-  type     = map(number)
-  nullable = false
   default  = {}
+  nullable = false
+  type = object({
+    desired = optional(number, 1)
+    min     = optional(number)
+    max     = optional(number)
+  })
 }
 
 variable "autoscaling" {
   type     = any
   nullable = false
   default  = {}
+}
+
+# task
+variable "task_config" {
+  type     = any
+  nullable = false
 }
 
 # output

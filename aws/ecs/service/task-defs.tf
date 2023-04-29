@@ -12,6 +12,7 @@ module "default-task-def" {
   command      = [local.default_command]
   logging      = { group = aws_cloudwatch_log_group.default.name, prefix = "default" }
   sizing       = { task = { cpu = 512, memory = 1024 } }
+  architecture = ""
 }
 
 module "target-task-def" {
@@ -34,11 +35,5 @@ module "target-task-def" {
   volumes      = lookup(var.task_config, "volumes", [])
   mount_points = lookup(var.task_config, "mount_points", [])
   sizing       = lookup(var.task_config, "sizing", {})
-}
-
-locals {
-  task_def_arns = {
-    default = module.default-task-def.default["arn"]
-    target  = module.target-task-def.default["arn"]
-  }
+  architecture = ""
 }
