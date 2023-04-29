@@ -21,8 +21,8 @@ locals {
   values     = values(var.input)
   output = [
     for i in range(length(var.input)) : {
-      name           = local.keys[i],
-      var.value_type = local.values[i]
+      name             = local.keys[i],
+      (var.value_type) = local.values[i]
     }
   ]
 }

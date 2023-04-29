@@ -173,11 +173,11 @@ variable "sizing" {
       cpu    = optional(number)
       memory = optional(number)
     })
-    container = object({
+    container = optional(object({
       cpu                = optional(number)
       memory             = optional(number)
       memory-reservation = optional(number)
-    })
+    }), {})
   })
 }
 
