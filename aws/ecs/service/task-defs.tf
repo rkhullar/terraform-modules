@@ -5,14 +5,14 @@ module "default-task-def" {
   roles        = lookup(var.task_config, "roles", {})
   launch_types = [var.launch_type]
   architecture = var.architecture
-  image        = "python:${var.python_version}-alpine"
+  image        = "public.ecr.aws/docker/library/python:${var.python_version}-bullseye"
   container    = var.name
   envs         = local.default_envs
   ports        = local.ports
   entrypoint   = ["python", "-c"]
   command      = [local.default_command]
   logging      = { group = aws_cloudwatch_log_group.default.name, prefix = "default" }
-  sizing       = { task = { cpu = 512, memory = 1024 } }
+  sizing       = { task = { cpu = 256, memory = 512 } }
 }
 
 module "target-task-def" {

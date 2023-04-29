@@ -14,19 +14,6 @@ resource "aws_ecr_repository" "default" {
   tags  = var.tags
 }
 
-/*
-locals {
-  cluster_patch_parts  = split("/", var.cluster)
-  cluster_patch_length = length(local.cluster_patch_parts)
-  cluster_patch_name   = local.cluster_patch_parts[local.cluster_patch_length - 1]
-}
-
-data "aws_ecs_cluster" "default" {
-  // patched to replace arn with name
-  cluster_name = local.cluster_patch_name
-}
-*/
-
 data "aws_ecs_cluster" "default" {
   cluster_name = var.cluster
 }
