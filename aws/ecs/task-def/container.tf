@@ -5,9 +5,9 @@ locals {
   logging        = merge(var.logging, { region = coalesce(var.logging.region, data.aws_region.default.name) })
 }
 
-module "envs-list" {
+module "environment-list" {
   source      = "../../util/map-to-list"
-  input       = var.envs
+  input       = var.environment
   ignore_case = var.ignore_case
   value_type  = "value"
 }
@@ -57,7 +57,7 @@ locals {
     image             = var.image
     essential         = var.flags.essential
     logConfiguration  = local.log_config
-    environment       = module.envs-list.output
+    environment       = module.environment-list.output
     secrets           = module.secrets-list.output
     portMappings      = local.ports_list
     entryPoint        = var.entrypoint

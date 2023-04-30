@@ -22,7 +22,7 @@ locals {
   flask_service_code = file("${path.module}/python/flask-service.py")
   default_commands   = ["pip install flask", "python <<-EOT\n${local.flask_service_code}\nEOT"]
   default_command    = join(";", local.default_commands)
-  default_envs = {
+  default_environment = {
     service-name = var.name
     service-port = local.target_port
   }

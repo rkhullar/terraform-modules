@@ -7,7 +7,7 @@ module "default-task-def" {
   architecture = var.architecture
   image        = "public.ecr.aws/docker/library/python:${var.python_version}-bullseye"
   container    = var.name
-  envs         = local.default_envs
+  environment  = local.default_environment
   ports        = local.ports
   entrypoint   = ["sh", "-c"]
   command      = [local.default_command]
@@ -24,7 +24,7 @@ module "target-task-def" {
   architecture = var.architecture
   image        = local.image
   container    = var.name
-  envs         = lookup(var.task_config, "envs", {})
+  environment  = lookup(var.task_config, "environment", {})
   secrets      = lookup(var.task_config, "secrets", {})
   ignore_case  = lookup(var.task_config, "ignore_case", false)
   ports        = local.ports

@@ -58,7 +58,7 @@ variable "container" {
   default  = null
 }
 
-variable "envs" {
+variable "environment" {
   type     = map(string)
   nullable = false
   default  = {}
