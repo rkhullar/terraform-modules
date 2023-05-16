@@ -58,3 +58,22 @@ resource "aws_s3_bucket_cors_configuration" "default" {
     }
   }
 }
+
+resource "aws_s3_bucket_lifecycle_configuration" "default" {
+  count = length(var.lifecycle_rules) > 0 ? 1 : 0
+  bucket = aws_s3_bucket.default.id
+  dynamic "rule" {
+    for_each = var.lifecycle_rules
+    content {
+
+    }
+  }
+
+  rule {
+    id     = "log-expiration"
+    status = "Enabled"
+    expiration {
+      days = var.expiration
+    }
+  }
+}

@@ -82,7 +82,8 @@ variable "force_destroy" {
 }
 
 variable "cors_rule" {
-  nullable = false
+  nullable = true
+  default = null
   type = object({
     allowed_headers = optional(list(string))
     allowed_methods = list(string)
@@ -90,6 +91,18 @@ variable "cors_rule" {
     expose_headers  = optional(list(string))
     max_age_seconds = optional(number)
   })
+}
+
+# https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_lifecycle_configuration#rule
+variable "lifecycle_rules" {
+  nullable = false
+  default = []
+  type = list(object({
+    id=string
+    enable=optional(bool, true)
+    expiration=optional(object({}))
+    filter=optional(object({}))
+  }))
 }
 
 # public access block
