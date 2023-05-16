@@ -83,7 +83,7 @@ variable "force_destroy" {
 
 variable "cors_rule" {
   nullable = true
-  default = null
+  default  = null
   type = object({
     allowed_headers = optional(list(string))
     allowed_methods = list(string)
@@ -93,15 +93,36 @@ variable "cors_rule" {
   })
 }
 
-# https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_lifecycle_configuration#rule
 variable "lifecycle_rules" {
+  # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_lifecycle_configuration#rule
   nullable = false
-  default = []
+  default  = []
   type = list(object({
-    id=string
-    enable=optional(bool, true)
-    expiration=optional(object({}))
-    filter=optional(object({}))
+    id     = string
+    enable = optional(bool, true)
+    filter = optional(object({}))
+    expiration = optional(object({
+      date                         = optional(string)
+      days                         = optional(number)
+      expired_object_delete_marker = optional(bool)
+    }))
+    transition = optional(list(object({
+      date          = optional(string)
+      days          = optional(number)
+      storage_class = string
+    })))
+    abort_incomplete_multipart_upload = optional(object({
+      days_after_initiation = number
+    }))
+    noncurrent_version_expiration = optional(object({
+      newer_noncurrent_versions = optional(number)
+      noncurrent_days           = optional(number)
+    }))
+    noncurrent_version_transition = optional(list(object({
+      newer_noncurrent_versions = optional(number)
+      noncurrent_days           = optional(number)
+      storage_class             = string
+    })))
   }))
 }
 

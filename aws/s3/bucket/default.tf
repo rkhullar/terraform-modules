@@ -60,20 +60,51 @@ resource "aws_s3_bucket_cors_configuration" "default" {
 }
 
 resource "aws_s3_bucket_lifecycle_configuration" "default" {
-  count = length(var.lifecycle_rules) > 0 ? 1 : 0
+  # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_lifecycle_configuration#rule
+  # https://github.com/terraform-aws-modules/terraform-aws-s3-bucket/blob/96226df43f789bdc4c3c0f2c8306ba0cf8e95605/main.tf#L215-L328
+  count  = length(var.lifecycle_rules) > 0 ? 1 : 0
   bucket = aws_s3_bucket.default.id
   dynamic "rule" {
     for_each = var.lifecycle_rules
     content {
+      id     = rule.value.id
+      status = rule.value.enable ? "Enabled" : "Disabled"
 
-    }
-  }
+      dynamic "expiration" {
+        for_each = try(rule.value.expiration, [])
+        content {
+          date                         = expiration.value.date
+          days                         = expiration.value.days
+          expired_object_delete_marker = expiration.value.expired_object_delete_marker
+        }
+      }
 
-  rule {
-    id     = "log-expiration"
-    status = "Enabled"
-    expiration {
-      days = var.expiration
+      dynamic "transition" {
+        for_each = rule.value.transition
+        content {
+          date          = transition.value.date
+          days          = transition.value.days
+          storage_class = transition.value.storage_class
+        }
+      }
+
+      dynamic "abort_incomplete_multipart_upload" {
+        for_each = try(rule.value.abort_incomplete_multipart_upload, [])
+        content  = abort_incomplete_multipart_upload.value
+        #        content {
+        #          days_after_initiation = abort_incomplete_multipart_upload.value.days_after_initiation
+        #        }
+      }
+
+      dynamic "noncurrent_version_expiration" {
+        for_each = try(rule.value.abort_incomplete_multipart_upload, [])
+        content  = noncurrent_version_expiration.value
+      }
+
+      dynamic "noncurrent_version_transition" {
+        for_each = try(rule.value.noncurrent_version_transition, [])
+        content  = noncurrent_version_transition.value
+      }
     }
   }
 }
