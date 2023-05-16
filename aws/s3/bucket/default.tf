@@ -12,9 +12,18 @@ resource "aws_s3_bucket_public_access_block" "default" {
   restrict_public_buckets = var.restrict_public_buckets
 }
 
-resource "aws_s3_bucket_acl" "default" {
+resource "aws_s3_bucket_ownership_controls" "default" {
   bucket = aws_s3_bucket.default.id
-  acl    = var.access
+  rule {
+    object_ownership = var.object_ownership
+  }
+}
+
+resource "aws_s3_bucket_acl" "default" {
+  depends_on = [aws_s3_bucket_ownership_controls.default]
+  count      = var.access != "" ? 1 : 0
+  bucket     = aws_s3_bucket.default.id
+  acl        = var.access
 }
 
 resource "aws_s3_bucket_policy" "default" {
@@ -90,21 +99,20 @@ resource "aws_s3_bucket_lifecycle_configuration" "default" {
 
       dynamic "abort_incomplete_multipart_upload" {
         for_each = try(rule.value.abort_incomplete_multipart_upload, [])
-        content  = abort_incomplete_multipart_upload.value
-        #        content {
-        #          days_after_initiation = abort_incomplete_multipart_upload.value.days_after_initiation
-        #        }
+        content {
+          days_after_initiation = abort_incomplete_multipart_upload.value.days_after_initiation
+        }
       }
 
-      dynamic "noncurrent_version_expiration" {
-        for_each = try(rule.value.abort_incomplete_multipart_upload, [])
-        content  = noncurrent_version_expiration.value
-      }
-
-      dynamic "noncurrent_version_transition" {
-        for_each = try(rule.value.noncurrent_version_transition, [])
-        content  = noncurrent_version_transition.value
-      }
+      #      dynamic "noncurrent_version_expiration" {
+      #        for_each = try(rule.value.abort_incomplete_multipart_upload, [])
+      #        content  = noncurrent_version_expiration.value
+      #      }
+      #
+      #      dynamic "noncurrent_version_transition" {
+      #        for_each = try(rule.value.noncurrent_version_transition, [])
+      #        content  = noncurrent_version_transition.value
+      #      }
     }
   }
 }

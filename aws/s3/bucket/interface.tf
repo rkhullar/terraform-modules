@@ -11,13 +11,23 @@ variable "tags" {
 }
 
 # access control
+variable "object_ownership" {
+  nullable = false
+  type     = string
+  default  = "BucketOwnerEnforced"
+  validation {
+    condition     = contains(["BucketOwnerPreferred", "ObjectWriter", "BucketOwnerEnforced"], var.object_ownership)
+    error_message = "Allowed Values: {BucketOwnerPreferred | ObjectWriter | BucketOwnerEnforced}."
+  }
+}
+
 variable "access" {
   type        = string
-  nullable    = true
-  default     = null
+  nullable    = false
+  default     = ""
   description = "https://docs.aws.amazon.com/AmazonS3/latest/dev/acl-overview.html#canned-acl"
   validation {
-    condition     = contains(["private", "public-read", "public-read-write", "aws-exec-read", "authenticated-read", "bucket-owner-read", "bucket-owner-full-control", "log-delivery-write"], var.access)
+    condition     = contains(["", "private", "public-read", "public-read-write", "aws-exec-read", "authenticated-read", "bucket-owner-read", "bucket-owner-full-control", "log-delivery-write"], var.access)
     error_message = "Allowed Values: {private | public-read | public-read-write | aws-exec-read | authenticated-read | bucket-owner-read | bucket-owner-full-control | log-delivery-write}."
   }
 }
@@ -71,7 +81,7 @@ variable "kms_master_key_id" {
 variable "bucket_key_enabled" {
   type     = bool
   nullable = false
-  default  = false
+  default  = true
 }
 
 # misc
