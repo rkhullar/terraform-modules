@@ -50,11 +50,11 @@ resource "aws_s3_bucket_cors_configuration" "default" {
   dynamic "cors_rule" {
     for_each = [var.cors_rule]
     content {
-      allowed_headers = lookup(cors_rule.value, "allowed_headers", null)
-      allowed_methods = [for item in cors_rule.value["allowed_methods"] : upper(item)]
-      allowed_origins = cors_rule.value["allowed_origins"]
-      expose_headers  = lookup(cors_rule.value, "expose_headers", null)
-      max_age_seconds = lookup(cors_rule.value, "max_age_seconds", null)
+      allowed_headers = cors_rule.value.allowed_headers
+      allowed_methods = [for item in cors_rule.value.allowed_methods : upper(item)]
+      allowed_origins = cors_rule.value.allowed_origins
+      expose_headers  = cors_rule.value.expose_headers
+      max_age_seconds = cors_rule.value.max_age_seconds
     }
   }
 }
