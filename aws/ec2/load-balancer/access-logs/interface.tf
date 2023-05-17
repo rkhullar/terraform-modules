@@ -9,6 +9,12 @@ variable "shared" {
   default  = true
 }
 
+variable "versioning" {
+  type     = bool
+  nullable = false
+  default  = false
+}
+
 variable "expiration" {
   type     = number
   nullable = false
@@ -28,5 +34,5 @@ variable "tags" {
 }
 
 output "output" {
-  value = aws_s3_bucket.default
+  value = module.bucket.output
 }
