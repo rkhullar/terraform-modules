@@ -120,7 +120,7 @@ variable "lifecycle_rules" {
       date          = optional(string)
       days          = optional(number)
       storage_class = string
-    })))
+    })), [])
     abort_incomplete_multipart_upload = optional(object({
       days_after_initiation = number
     }))
@@ -132,7 +132,7 @@ variable "lifecycle_rules" {
       newer_noncurrent_versions = optional(number)
       noncurrent_days           = optional(number)
       storage_class             = string
-    })))
+    })), [])
   }))
 }
 

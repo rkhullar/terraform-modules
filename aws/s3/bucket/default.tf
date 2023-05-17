@@ -80,7 +80,9 @@ resource "aws_s3_bucket_lifecycle_configuration" "default" {
       status = rule.value.enable ? "Enabled" : "Disabled"
 
       dynamic "expiration" {
-        for_each = rule.value.expiration != null ? [rule.value.expiration] : []
+        # NOTE: https://github.com/hashicorp/terraform/issues/28264
+        # for_each = rule.value.expiration != null ? [rule.value.expiration] : []
+        for_each = [for item in [rule.value.expiration] : item if item != null]
         content {
           date                         = expiration.value.date
           days                         = expiration.value.days
@@ -89,7 +91,8 @@ resource "aws_s3_bucket_lifecycle_configuration" "default" {
       }
 
       dynamic "transition" {
-        for_each = coalesce(rule.value.transition)
+        # for_each = rule.value.transition != null ? rule.value.transition : []
+        for_each = rule.value.transition
         content {
           date          = transition.value.date
           days          = transition.value.days
@@ -98,14 +101,16 @@ resource "aws_s3_bucket_lifecycle_configuration" "default" {
       }
 
       dynamic "abort_incomplete_multipart_upload" {
-        for_each = rule.value.abort_incomplete_multipart_upload != null ? [rule.value.abort_incomplete_multipart_upload] : []
+        # for_each = rule.value.abort_incomplete_multipart_upload != null ? [rule.value.abort_incomplete_multipart_upload] : []
+        for_each = [for item in [rule.value.abort_incomplete_multipart_upload] : item if item != null]
         content {
           days_after_initiation = abort_incomplete_multipart_upload.value.days_after_initiation
         }
       }
 
       dynamic "noncurrent_version_expiration" {
-        for_each = rule.value.noncurrent_version_expiration != null ? [rule.value.noncurrent_version_expiration] : []
+        # for_each = rule.value.noncurrent_version_expiration != null ? [rule.value.noncurrent_version_expiration] : []
+        for_each = [for item in [rule.value.noncurrent_version_expiration] : item if item != null]
         content {
           newer_noncurrent_versions = noncurrent_version_expiration.value.newer_noncurrent_versions
           noncurrent_days           = noncurrent_version_expiration.value.noncurrent_days
@@ -113,7 +118,8 @@ resource "aws_s3_bucket_lifecycle_configuration" "default" {
       }
 
       dynamic "noncurrent_version_transition" {
-        for_each = coalesce(rule.value.noncurrent_version_transition, [])
+        # for_each = rule.value.noncurrent_version_transition != null ? rule.value.noncurrent_version_transition : []
+        for_each = rule.value.noncurrent_version_transition
         content {
           newer_noncurrent_versions = noncurrent_version_transition.value.newer_noncurrent_versions
           noncurrent_days           = noncurrent_version_transition.value.noncurrent_days
