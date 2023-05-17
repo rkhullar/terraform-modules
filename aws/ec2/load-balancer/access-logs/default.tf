@@ -8,6 +8,13 @@ module "bucket" {
   attach_policy = true
 }
 
+resource "aws_s3_bucket_ownership_controls" "default" {
+  bucket = module.bucket.output.id
+  rule {
+    object_ownership = "BucketOwnerPreferred"
+  }
+}
+
 resource "aws_s3_bucket_lifecycle_configuration" "default" {
   bucket = module.bucket.output.id
   rule {
