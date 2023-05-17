@@ -9,6 +9,12 @@ variable "shared" {
   default  = true
 }
 
+variable "versioning" {
+  type     = bool
+  nullable = false
+  default  = false
+}
+
 variable "expiration" {
   type     = number
   nullable = false
