@@ -2,6 +2,7 @@ module "bucket" {
   source = "../../../s3/bucket"
   name   = var.name
   tags   = var.tags
+  access = "private"
   policy = data.aws_iam_policy_document.default.json
   lifecycle = [
     { id = log-expiration, expiration = var.expiration }
