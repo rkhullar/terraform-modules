@@ -58,7 +58,7 @@ variable "target_groups" {
     key         = string
     name        = optional(string)
     name_prefix = optional(string)
-    target_type = optional(string)
+    target_type = string
     port        = optional(number)
     protocol    = optional(string)
     health_check = optional(object({
