@@ -1,9 +1,10 @@
 module "bucket" {
-  source = "../../../s3/bucket"
-  name   = var.name
-  tags   = var.tags
-  access = "private"
-  policy = data.aws_iam_policy_document.default.json
+  source        = "../../../s3/bucket"
+  name          = var.name
+  tags          = var.tags
+  access        = "private"
+  policy        = data.aws_iam_policy_document.default.json
+  attach_policy = true
 }
 
 resource "aws_s3_bucket_lifecycle_configuration" "default" {
