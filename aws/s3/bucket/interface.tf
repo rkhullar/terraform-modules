@@ -110,7 +110,12 @@ variable "lifecycle_rules" {
   type = list(object({
     id     = string
     enable = optional(bool, true)
-    filter = optional(object({}))
+    filter = optional(object({
+      object_size_greater_than = optional(number)
+      object_size_less_than    = optional(number)
+      prefix                   = optional(string)
+      tags                     = optional(map(string))
+    }))
     expiration = optional(object({
       date                         = optional(string)
       days                         = optional(number)

@@ -68,6 +68,17 @@ resource "aws_s3_bucket_cors_configuration" "default" {
   }
 }
 
+locals {
+  lifecycle_rules_with_filter_map = { for rule in var.lifecycle_rules : rule.id => rule if rule.filter != null }
+  lifecycle_rules_with_filter_set = keys(local.lifecycle_rules_with_filter_map)
+  lifecycle_rules_filter_map = { for id in local.lifecycle_rules_with_filter_set : id => {
+    for key, value in local.lifecycle_rules_with_filter_map[id] : key => value if value != null
+  } }
+  lifecycle_rules_filter_map_size        = { for id, filter in local.lifecycle_rules_filter_map : id => length(keys(filter)) }
+  lifecycle_rules_with_single_filter_set = [for id in local.lifecycle_rules_with_filter_set : id if local.lifecycle_rules_filter_map_size[id] == 1]
+  lifecycle_rules_with_mixed_filter_set  = [for id in local.lifecycle_rules_with_filter_set : id if local.lifecycle_rules_filter_map_size[id] > 1]
+}
+
 resource "aws_s3_bucket_lifecycle_configuration" "default" {
   # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_lifecycle_configuration#rule
   # https://github.com/terraform-aws-modules/terraform-aws-s3-bucket/blob/96226df43f789bdc4c3c0f2c8306ba0cf8e95605/main.tf#L215-L328
@@ -119,6 +130,36 @@ resource "aws_s3_bucket_lifecycle_configuration" "default" {
           newer_noncurrent_versions = noncurrent_version_transition.value.newer_noncurrent_versions
           noncurrent_days           = noncurrent_version_transition.value.noncurrent_days
           storage_class             = upper(noncurrent_version_transition.value.storage_class)
+        }
+      }
+
+      # filter with one condition or tag
+      dynamic "filter" {
+        for_each = [for item in [rule.value.filter] : item if contains(local.lifecycle_rules_with_single_filter_set, rule.value.id)]
+        content {
+          object_size_greater_than = filter.value.object_size_greater_than
+          object_size_less_than    = filter.value.object_size_less_than
+          prefix                   = filter.value.prefix
+          dynamic "tag" {
+            for_each = coalesce(filter.value.tags, {})
+            content {
+              key   = tag.key
+              value = tag.value
+            }
+          }
+        }
+      }
+
+      # filter with more than one condition or tag
+      dynamic "filter" {
+        for_each = [for item in [rule.value.filter] : item if contains(local.lifecycle_rules_with_mixed_filter_set, rule.value.id)]
+        content {
+          and {
+            object_size_greater_than = filter.value.object_size_greater_than
+            object_size_less_than    = filter.value.object_size_less_than
+            prefix                   = filter.value.prefix
+            tags                     = filter.value.tags
+          }
         }
       }
     }
