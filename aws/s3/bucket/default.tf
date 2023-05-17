@@ -75,8 +75,10 @@ locals {
     for key, value in local.lifecycle_rules_with_filter_map[id] : key => value if value != null
   } }
   lifecycle_rules_filter_map_size        = { for id, filter in local.lifecycle_rules_filter_map : id => length(keys(filter)) }
-  lifecycle_rules_with_single_filter_set = [for id in local.lifecycle_rules_with_filter_set : id if local.lifecycle_rules_filter_map_size[id] == 1]
-  lifecycle_rules_with_mixed_filter_set  = [for id in local.lifecycle_rules_with_filter_set : id if local.lifecycle_rules_filter_map_size[id] > 1]
+  lifecycle_rules_filter_tags            = { for id, filter in local.lifecycle_rules_filter_map : id => lookup(filter, "tags", {}) }
+  lifecycle_rules_filter_tags_size       = { for id, tags in local.lifecycle_rules_filter_tags : id => length(tags) }
+  lifecycle_rules_with_single_filter_set = [for id in local.lifecycle_rules_with_filter_set : id if max(local.lifecycle_rules_filter_map_size[id], local.lifecycle_rules_filter_tags_size[id]) == 1]
+  lifecycle_rules_with_mixed_filter_set  = [for id in local.lifecycle_rules_with_filter_set : id if max(local.lifecycle_rules_filter_map_size[id], local.lifecycle_rules_filter_tags_size[id]) > 1]
 }
 
 resource "aws_s3_bucket_lifecycle_configuration" "default" {
