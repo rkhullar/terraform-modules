@@ -4,9 +4,6 @@ module "bucket" {
   tags   = var.tags
   access = "private"
   policy = data.aws_iam_policy_document.default.json
-  lifecycle = [
-    { id = log-expiration, expiration = var.expiration }
-  ]
 }
 
 resource "aws_s3_bucket_lifecycle_configuration" "default" {
