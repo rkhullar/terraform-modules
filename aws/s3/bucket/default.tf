@@ -80,7 +80,7 @@ resource "aws_s3_bucket_lifecycle_configuration" "default" {
       status = rule.value.enable ? "Enabled" : "Disabled"
 
       dynamic "expiration" {
-        for_each = try(rule.value.expiration, [])
+        for_each = rule.value.expiration != null ? [rule.value.expiration] : []
         content {
           date                         = expiration.value.date
           days                         = expiration.value.days
@@ -89,30 +89,37 @@ resource "aws_s3_bucket_lifecycle_configuration" "default" {
       }
 
       dynamic "transition" {
-        for_each = rule.value.transition
+        for_each = coalesce(rule.value.transition)
         content {
           date          = transition.value.date
           days          = transition.value.days
-          storage_class = transition.value.storage_class
+          storage_class = upper(transition.value.storage_class)
         }
       }
 
       dynamic "abort_incomplete_multipart_upload" {
-        for_each = try(rule.value.abort_incomplete_multipart_upload, [])
+        for_each = rule.value.abort_incomplete_multipart_upload != null ? [rule.value.abort_incomplete_multipart_upload] : []
         content {
           days_after_initiation = abort_incomplete_multipart_upload.value.days_after_initiation
         }
       }
 
-      #      dynamic "noncurrent_version_expiration" {
-      #        for_each = try(rule.value.abort_incomplete_multipart_upload, [])
-      #        content  = noncurrent_version_expiration.value
-      #      }
-      #
-      #      dynamic "noncurrent_version_transition" {
-      #        for_each = try(rule.value.noncurrent_version_transition, [])
-      #        content  = noncurrent_version_transition.value
-      #      }
+      dynamic "noncurrent_version_expiration" {
+        for_each = rule.value.noncurrent_version_expiration != null ? [rule.value.noncurrent_version_expiration] : []
+        content {
+          newer_noncurrent_versions = noncurrent_version_expiration.value.newer_noncurrent_versions
+          noncurrent_days           = noncurrent_version_expiration.value.noncurrent_days
+        }
+      }
+
+      dynamic "noncurrent_version_transition" {
+        for_each = coalesce(rule.value.noncurrent_version_transition, [])
+        content {
+          newer_noncurrent_versions = noncurrent_version_transition.value.newer_noncurrent_versions
+          noncurrent_days           = noncurrent_version_transition.value.noncurrent_days
+          storage_class             = upper(noncurrent_version_transition.value.storage_class)
+        }
+      }
     }
   }
 }
