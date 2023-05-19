@@ -15,12 +15,6 @@ variable "versioning" {
   default  = false
 }
 
-variable "expiration" {
-  type     = number
-  nullable = false
-  default  = 14
-}
-
 variable "prefix" {
   type     = string
   nullable = true
@@ -31,6 +25,18 @@ variable "tags" {
   type     = map(string)
   nullable = false
   default  = {}
+}
+
+variable "expiration" {
+  type     = number
+  nullable = false
+  default  = 14
+}
+
+variable "lifecycle_rules" {
+  default  = []
+  nullable = false
+  type     = list(any)
 }
 
 output "output" {
