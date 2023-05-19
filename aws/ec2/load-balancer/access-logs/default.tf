@@ -4,7 +4,7 @@ module "bucket" {
   tags            = var.tags
   versioning      = var.versioning
   policy          = data.aws_iam_policy_document.default.json
-  lifecycle_rules = coalesce(var.lifecycle_rules, [local.default_lifecycle_rule])
+  lifecycle_rules = coalescelist(var.lifecycle_rules, [local.default_lifecycle_rule])
 }
 
 locals {
