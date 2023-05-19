@@ -27,7 +27,7 @@ resource "aws_s3_bucket_acl" "default" {
 }
 
 resource "aws_s3_bucket_policy" "default" {
-  count  = var.attach_policy ? 1 : 0
+  count  = var.attach_policy && var.policy != null ? 1 : 0
   bucket = aws_s3_bucket.default.id
   policy = var.policy
 }

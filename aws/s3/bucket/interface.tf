@@ -41,7 +41,7 @@ variable "policy" {
 variable "attach_policy" {
   type     = bool
   nullable = false
-  default  = false
+  default  = true
 }
 
 variable "versioning" {
