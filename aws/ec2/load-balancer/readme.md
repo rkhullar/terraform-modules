@@ -1,7 +1,3 @@
-#### TODO
-- [ ] revisit and test access logs module
-  - [ ] adopt s3/bucket module
-
 #### Example
 ```terraform
 locals {
