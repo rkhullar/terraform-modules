@@ -14,51 +14,71 @@ variable "lambda_function_name" {
   nullable = false
 }
 
-variable "flags_default" {
-  nullable = false
-  type = object({
-    auto_deploy              = bool
-    disable_default_endpoint = bool
-    create_lambda_permission = bool
-    enable_jwt_authorizer    = bool
-  })
-  default = {
-    auto_deploy              = true
-    disable_default_endpoint = true
-    create_lambda_permission = true
-    enable_jwt_authorizer    = true
-  }
+variable "lambda_function_alias" {
+  type     = string
+  nullable = true
+  default  = null
 }
 
 variable "flags" {
-  type     = map(bool)
   default  = {}
   nullable = false
+  type = object({
+    auto_deploy              = optional(bool, true)
+    disable_default_endpoint = optional(bool, true)
+    create_lambda_permission = optional(bool, true)
+    enable_jwt_authorizer    = optional(bool, true)
+    enable_proxy_route       = optional(bool, true)
+    enable_logs              = optional(bool, true)
+  })
 }
 
-variable "jwt_auth_default" {
-  nullable = false
+variable "jwt_auth" {
+  default  = null
+  nullable = true
   type = object({
     name     = string
     issuer   = string
     audience = string
   })
-  default = {
-    name     = null
-    issuer   = null
-    audience = null
-  }
 }
 
-variable "jwt_auth" {
-  type     = map(string)
-  default  = {}
+variable "allowed_methods" {
+  type     = set(string)
+  default  = ["get", "post", "put", "delete"]
   nullable = false
 }
 
-locals {
-  flags    = merge(var.flags_default, var.flags)
-  jwt_auth = merge(var.jwt_auth_default, var.jwt_auth)
+variable "allowed_origins" {
+  type     = set(string)
+  default  = []
+  nullable = false
+}
+
+variable "extra_routes" {
+  default  = []
+  nullable = false
+  type = list(object({
+    method      = string
+    path        = string
+    require_jwt = optional(bool, false)
+    scopes      = optional(list(string))
+  }))
+}
+
+variable "log_context" {
+  type     = map(string)
+  nullable = false
+  default = {
+    httpMethod     = "$context.httpMethod"
+    ip             = "$context.identity.sourceIp"
+    protocol       = "$context.protocol"
+    requestId      = "$context.requestId"
+    requestTime    = "$context.requestTime"
+    responseLength = "$context.responseLength"
+    routeKey       = "$context.routeKey"
+    status         = "$context.status"
+  }
 }
 
 # output
