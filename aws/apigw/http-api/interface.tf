@@ -5,8 +5,8 @@ variable "name" {
 
 variable "tags" {
   type     = map(string)
-  default  = {}
   nullable = false
+  default  = {}
 }
 
 variable "lambda_function_name" {

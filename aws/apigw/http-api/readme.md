@@ -1,5 +1,5 @@
 #### Notes
-By default, this module used jwt authorization. If the api is created with jwt auth enabled, and you need to disable the
+By default, this module uses jwt authorization. If the api is created with jwt auth enabled, and you need to disable the
 auth, then you'll run into this error message:
 
 `ConflictException: Cannot delete authorizer {name}, is referenced in route: $default`
