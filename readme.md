@@ -11,6 +11,7 @@
 ### 0.4.0
 - update constructs to require terraform ~1.5 with aws provider ~5.0
 - remove `network/v1` module and construct; move `network/v2` to `network`
+- add `params/lookup` module
 
 [defaults-function]: https://www.terraform.io/language/functions/defaults
 [optional-attributes-experiment]: https://www.terraform.io/language/expressions/type-constraints#experimental-optional-object-type-attributes
