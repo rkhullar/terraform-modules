@@ -1,5 +1,5 @@
 module "default" {
-  source       = "../../../ec2/network/v2"
+  source       = "../../ec2/network"
   vpc_id       = local.vpc.id
   tags         = local.common_tags
   prefix       = local.prefix
