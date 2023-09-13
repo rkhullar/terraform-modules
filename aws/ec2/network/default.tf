@@ -8,7 +8,7 @@ locals {
 
 module "security-groups" {
   for_each    = var.names
-  source      = "../../security-group"
+  source      = "../security-group"
   name        = local.names[each.key]
   description = local.descriptions[each.key]
   tags        = var.tags
@@ -33,13 +33,13 @@ module "security-groups" {
 }
 
 module "security-groups-lookup" {
-  source = "../../security-group/lookup"
+  source = "../security-group/lookup"
   names  = local.names
   vpc_id = var.vpc_id
 }
 
 module "rules" {
-  source  = "../../security-group/custom-rules"
+  source  = "../security-group/custom-rules"
   enable  = local.enable_rules
   aliases = local.aliases
   rules   = var.custom_rules
