@@ -19,6 +19,12 @@ variable "template" {
   default  = "shell"
 }
 
+variable "description" {
+  type     = string
+  nullable = true
+  default  = null
+}
+
 output "output" {
   value = aws_lambda_layer_version.default
 }
