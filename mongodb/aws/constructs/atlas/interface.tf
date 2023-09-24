@@ -30,6 +30,15 @@ variable "cluster_type" {
   }
 }
 
+variable "flags" {
+  default  = {}
+  nullable = false
+  type = object({
+    backup                 = optional(bool, false)
+    termination_protection = optional(bool, false)
+  })
+}
+
 # output
 #output "public_host" {
 #  value = local.public_atlas_host

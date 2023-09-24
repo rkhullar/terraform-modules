@@ -17,11 +17,12 @@ resource "mongodbatlas_serverless_instance" "serverless" {
 }
 
 resource "mongodbatlas_advanced_cluster" "advanced" {
-  count          = contains(["shared"], var.cluster_type) ? 1 : 0
-  project_id     = local.atlas_project_id
-  name           = var.atlas_cluster
-  cluster_type   = upper("replicaset")
-  backup_enabled = false
+  count                          = contains(["shared"], var.cluster_type) ? 1 : 0
+  project_id                     = local.atlas_project_id
+  name                           = var.atlas_cluster
+  cluster_type                   = upper("replicaset")
+  backup_enabled                 = var.flags.backup
+  termination_protection_enabled = var.flags.termination_protection
 
   replication_specs {
     region_configs {
