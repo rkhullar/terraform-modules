@@ -13,6 +13,12 @@
 - remove `network/v1` module and construct; move `network/v2` to `network`
 - add `params/lookup` module
 
+### 0.4.1
+- add `lambda/layer` module
+
+### 0.4.2
+- TBD
+
 [defaults-function]: https://www.terraform.io/language/functions/defaults
 [optional-attributes-experiment]: https://www.terraform.io/language/expressions/type-constraints#experimental-optional-object-type-attributes
 [terragrunt-null-issue]: https://github.com/gruntwork-io/terragrunt/issues/892
