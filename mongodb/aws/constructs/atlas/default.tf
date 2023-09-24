@@ -28,6 +28,9 @@ resource "mongodbatlas_advanced_cluster" "advanced" {
       priority      = 0
       provider_name = upper("aws")
       region_name   = local.atlas_region
+      electable_specs {
+        instance_size = "M0"
+      }
     }
   }
 
