@@ -21,7 +21,7 @@ variable "atlas_cluster" {
 }
 
 variable "cluster_type" {
-  type = string
+  type     = string
   nullable = false
   validation {
     # TODO: add support for dedicated

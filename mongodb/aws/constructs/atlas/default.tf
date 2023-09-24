@@ -8,7 +8,7 @@ data "mongodbatlas_project" "default" {
 }
 
 resource "mongodbatlas_serverless_instance" "serverless" {
-  count = var.cluster_type == "serverless" ? 1:0
+  count                                   = var.cluster_type == "serverless" ? 1 : 0
   project_id                              = local.atlas_project_id
   name                                    = var.atlas_cluster
   provider_settings_backing_provider_name = upper("aws")
@@ -17,10 +17,10 @@ resource "mongodbatlas_serverless_instance" "serverless" {
 }
 
 resource "mongodbatlas_advanced_cluster" "advanced" {
-  count = contains(["shared"], var.cluster_type) ? 1:0
-  project_id   = local.atlas_project_id
-  name         = var.atlas_cluster
-  cluster_type = upper("replicaset")
+  count          = contains(["shared"], var.cluster_type) ? 1 : 0
+  project_id     = local.atlas_project_id
+  name           = var.atlas_cluster
+  cluster_type   = upper("replicaset")
   backup_enabled = false
 
   replication_specs {
@@ -31,10 +31,10 @@ resource "mongodbatlas_advanced_cluster" "advanced" {
     }
   }
 
-  dynamic tags {
+  dynamic "tags" {
     for_each = local.common_tags
     content {
-      key = tags.key
+      key   = tags.key
       value = tags.value
     }
   }
