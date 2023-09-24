@@ -25,7 +25,7 @@ resource "mongodbatlas_advanced_cluster" "advanced" {
 
   replication_specs {
     region_configs {
-      priority              = 0
+      priority              = 7
       provider_name         = upper("tenant")
       backing_provider_name = upper("aws")
       region_name           = local.atlas_region
