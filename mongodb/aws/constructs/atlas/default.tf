@@ -14,6 +14,14 @@ resource "mongodbatlas_serverless_instance" "serverless" {
   provider_settings_backing_provider_name = upper("aws")
   provider_settings_provider_name         = upper("serverless")
   provider_settings_region_name           = local.atlas_region
+
+  dynamic "tags" {
+    for_each = local.common_tags
+    content {
+      key   = tags.key
+      value = tags.value
+    }
+  }
 }
 
 resource "mongodbatlas_advanced_cluster" "advanced" {

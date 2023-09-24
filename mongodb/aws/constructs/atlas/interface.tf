@@ -36,10 +36,31 @@ variable "flags" {
   type = object({
     backup                 = optional(bool, false)
     termination_protection = optional(bool, false)
+    create_admin           = optional(bool, false)
   })
 }
 
+variable "access_rules" {
+  default  = []
+  nullable = false
+  type = set(object({
+    role       = string
+    database   = string
+    collection = string
+    access     = string
+  }))
+}
+
+variable "ingress_sources" {
+  default  = []
+  nullable = false
+  type = set(object({
+    source  = string
+    comment = string
+  }))
+}
+
 # output
-#output "public_host" {
-#  value = local.public_atlas_host
-#}
+output "public_host" {
+  value = local.public_atlas_host
+}
