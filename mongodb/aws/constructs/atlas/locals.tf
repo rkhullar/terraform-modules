@@ -11,8 +11,8 @@ locals {
 }
 
 locals {
-  create_serverless = var.cluster_type == "serverless" ? 1 : 0
-  create_advanced   = contains(["shared"], var.cluster_type) ? 1 : 0
+  create_serverless = var.cluster_type == "serverless"
+  create_advanced   = contains(["shared"], var.cluster_type)
 }
 
 locals {
