@@ -17,7 +17,7 @@
 - add `lambda/layer` module
 
 ### 0.4.2
-- TBD
+- start construct and module for MongoDB Atlas Cluster backed by AWS
 
 [defaults-function]: https://www.terraform.io/language/functions/defaults
 [optional-attributes-experiment]: https://www.terraform.io/language/expressions/type-constraints#experimental-optional-object-type-attributes
