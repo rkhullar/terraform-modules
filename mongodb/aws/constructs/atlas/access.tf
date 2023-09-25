@@ -13,6 +13,6 @@ module "access" {
 locals {
   default_role_prefix = "${var.project}-"
   default_role_suffix = "-${var.environment}-${var.namespace}"
-  role_prefix = var.flags.render_role ? coalesce(var.flags.role_prefix, local.default_role_prefix) : null
-  role_suffix = var.flags.render_role ? coalesce(var.flags.role_suffix, local.default_role_suffix) : null
+  role_prefix         = var.flags.render_role ? coalesce(var.flags.role_prefix, local.default_role_prefix) : null
+  role_suffix         = var.flags.render_role ? coalesce(var.flags.role_suffix, local.default_role_suffix) : null
 }
