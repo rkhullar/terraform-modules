@@ -1,3 +1,4 @@
+# TODO: revisit for_each error
 resource "mongodbatlas_database_user" "admin-sso" {
   for_each           = var.create_admin ? local.aws_admin_roles : {}
   project_id         = local.project_id
