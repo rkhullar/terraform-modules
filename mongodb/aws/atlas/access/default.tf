@@ -1,4 +1,5 @@
 resource "mongodbatlas_database_user" "admin-sso" {
+  depends_on = [data.aws_iam_roles.admin-sso]
   for_each           = var.create_admin ? local.aws_admin_roles : {}
   project_id         = local.project_id
   auth_database_name = "$external"
