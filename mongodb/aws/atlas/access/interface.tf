@@ -38,12 +38,12 @@ variable "ingress_sources" {
 
 variable "role_prefix" {
   type     = string
-  nullable = false
+  nullable = true
   default  = null
 }
 
 variable "role_suffix" {
   type     = string
-  nullable = false
+  nullable = true
   default  = null
 }
