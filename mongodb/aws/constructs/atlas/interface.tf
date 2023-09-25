@@ -37,8 +37,9 @@ variable "flags" {
     backup                 = optional(bool, false)
     termination_protection = optional(bool, false)
     create_admin           = optional(bool, false)
-    role_prefix            = optional(string)
-    role_suffix            = optional(string)
+    render_role = optional(bool, true)
+    role_prefix = optional(string)
+    role_suffix = optional(string)
   })
 }
 

@@ -25,18 +25,6 @@ variable "access_rules" {
   }))
 }
 
-variable "role_prefix" {
-  type     = string
-  nullable = true
-  default  = null
-}
-
-variable "role_suffix" {
-  type     = string
-  nullable = true
-  default  = null
-}
-
 variable "ingress_sources" {
   default  = []
   nullable = false
@@ -44,4 +32,18 @@ variable "ingress_sources" {
     source  = string
     comment = string
   }))
+}
+
+# TODO: adopt role_template and role_template_params if template function becomes available
+
+variable "role_prefix" {
+  type     = string
+  nullable = false
+  default  = null
+}
+
+variable "role_suffix" {
+  type     = string
+  nullable = false
+  default  = null
 }
