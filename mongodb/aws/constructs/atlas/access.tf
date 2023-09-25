@@ -1,7 +1,6 @@
 module "access" {
   depends_on      = [mongodbatlas_serverless_instance.serverless, mongodbatlas_advanced_cluster.advanced]
   source          = "../../atlas/access"
-  providers       = { mongodbatlas = mongodbatlas.default }
   project         = var.atlas_project
   cluster         = var.atlas_cluster
   create_admin    = var.flags.create_admin
