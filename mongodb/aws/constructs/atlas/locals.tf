@@ -24,5 +24,5 @@ locals {
 }
 
 locals {
-  public_atlas_host = split("//", local.standard_connection)
+  public_atlas_host = split("//", local.standard_connection)[1]
 }
