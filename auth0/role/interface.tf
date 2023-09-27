@@ -9,8 +9,8 @@ variable "description" {
 }
 
 variable "permissions" {
-  type     = map(list(string))
-  nullable = false
-  default  = {}
-  help     = "resource_server_identifier -> scopes"
+  type        = map(list(string))
+  nullable    = false
+  default     = {}
+  description = "resource_server_identifier -> scopes"
 }

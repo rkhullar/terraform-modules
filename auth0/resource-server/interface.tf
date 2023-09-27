@@ -20,9 +20,9 @@ variable "flags" {
 }
 
 variable "scopes" {
-  nullable = false
-  type     = map(string)
-  help     = "scope -> description"
+  nullable    = false
+  type        = map(string)
+  description = "scope -> description"
 }
 
 variable "roles" {
