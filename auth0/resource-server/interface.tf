@@ -16,6 +16,7 @@ variable "flags" {
     include_permissions  = optional(bool, false)
     allow_offline_access = optional(bool, true)
     skip_user_consent    = optional(bool, true)
+    delimiter            = optional(string, "/")
   })
 }
 
