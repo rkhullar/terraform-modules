@@ -24,3 +24,13 @@ variable "scopes" {
   type     = map(string)
   help     = "scope -> description"
 }
+
+variable "roles" {
+  default  = []
+  nullable = false
+  type = set(object({
+    name        = string
+    description = string
+    scopes      = list(string)
+  }))
+}

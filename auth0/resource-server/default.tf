@@ -22,3 +22,15 @@ resource "auth0_resource_server_scopes" "default" {
     }
   }
 }
+
+locals {
+  role_map = { for role in var.roles : role.name => role }
+}
+
+module "roles" {
+  source      = "../role"
+  for_each    = local.role_map
+  name        = "${var.name}/each.value.name"
+  description = each.value.description
+  permissions = { auth0_resource_server.default.identifier = each.value.scopes }
+}
