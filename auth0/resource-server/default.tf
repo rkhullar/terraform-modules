@@ -32,5 +32,5 @@ module "roles" {
   for_each    = local.role_map
   name        = "${var.name}/each.value.name"
   description = each.value.description
-  permissions = { auth0_resource_server.default.identifier = each.value.scopes }
+  permissions = { "${auth0_resource_server.default.identifier}" = each.value.scopes }
 }
