@@ -22,4 +22,5 @@ variable "flags" {
 variable "scopes" {
   nullable = false
   type     = map(string)
+  help     = "scope -> description"
 }
