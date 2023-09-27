@@ -20,6 +20,9 @@
 ### 0.4.2
 - start construct and module for MongoDB Atlas Cluster backed by AWS
 
+### 0.4.3
+- start modules for Auth0 `resource-server` and `role`
+
 [defaults-function]: https://www.terraform.io/language/functions/defaults
 [optional-attributes-experiment]: https://www.terraform.io/language/expressions/type-constraints#experimental-optional-object-type-attributes
 [terragrunt-null-issue]: https://github.com/gruntwork-io/terragrunt/issues/892
