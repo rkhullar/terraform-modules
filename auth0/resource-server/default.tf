@@ -24,13 +24,15 @@ resource "auth0_resource_server_scopes" "default" {
 }
 
 locals {
-  role_map = { for role in var.roles : role.name => role }
+  role_map               = { for role in var.roles : role.name => role }
+  role_enable_prefix_map = { for role in var.roles : role.name => coalesce(role.enable_prefix, var.flags.enable_prefix) }
+  role_delimiter_map     = { for role in var.roles : role.name => coalesce(role.delimiter, var.flags.delimiter) }
 }
 
 module "roles" {
   source      = "../role"
   for_each    = local.role_map
-  name        = "${var.name}${var.flags.delimiter}${each.value.name}"
+  name        = local.role_enable_prefix_map[each.key] ? "${var.name}${local.role_delimiter_map[each.key]}${each.value.name}" : each.value.name
   description = each.value.description
   permissions = { "${auth0_resource_server.default.identifier}" = each.value.scopes }
 }

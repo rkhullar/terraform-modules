@@ -17,6 +17,7 @@ variable "flags" {
     allow_offline_access = optional(bool, true)
     skip_user_consent    = optional(bool, true)
     delimiter            = optional(string, "/")
+    enable_prefix        = optional(bool, true)
   })
 }
 
@@ -30,8 +31,10 @@ variable "roles" {
   default  = []
   nullable = false
   type = set(object({
-    name        = string
-    description = string
-    scopes      = list(string)
+    name          = string
+    description   = string
+    scopes        = list(string)
+    delimiter     = optional(string)
+    enable_prefix = optional(bool)
   }))
 }
